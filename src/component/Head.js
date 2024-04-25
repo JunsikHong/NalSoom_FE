@@ -25,10 +25,10 @@ export default function Head() {
                     <div className='head-right'>
                         <ul className="head-content-wrap">
                             <li className="head-notification">
-                                <FaBell size={25}/>
+                                <NavLink to="/notification"><FaBell size={25}/></NavLink>
                             </li>
                             <li className="head-login">
-                                <FaUser size={25}/>
+                                <NavLink to="/login"><FaUser size={25}/></NavLink>
                             </li>
                         </ul>
                     </div>
