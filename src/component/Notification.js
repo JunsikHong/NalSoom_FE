@@ -1,7 +1,13 @@
+import 'style/Notification.css';
+
 export default function Notification() {
     return (
         <div>
-            알림
+            <div className="notification-wrap">
+                <div className="notification">
+                    알림
+                </div>
+            </div>
         </div>
     );
 }

@@ -1,7 +1,13 @@
+import 'style/Share.css';
+
 export default function Share() {
     return(
         <div>
-            공유
+            <div className="share-wrap">
+                <div className="share">
+                    공유
+                </div>
+            </div>
         </div>
     );
 }
