@@ -12,9 +12,9 @@ import * as pages from 'pages';
 function App() {
   return (
     <div className="App">
-      <Reset/>
-      <Head />
+      <Reset />
       <BrowserRouter>
+        <Head />
         <Routes>
           <Route path="*" element={<pages.Main />} />
           <Route path="/login" element={<pages.Login />} />
