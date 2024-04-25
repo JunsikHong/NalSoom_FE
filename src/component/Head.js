@@ -19,8 +19,8 @@ export default function Head() {
                     </div>
                     <div className='head-right'>
                         <ul className="head-content-wrap">
-                            <li className="head-notification"><FaBell size={30}/></li>
-                            <li className="head-login"><FaUser size={30}/></li>
+                            <li className="head-notification"><FaBell size={25}/></li>
+                            <li className="head-login"><FaUser size={25}/></li>
                         </ul>
                     </div>
                 </div>

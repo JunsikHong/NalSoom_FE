@@ -1,7 +1,11 @@
 export default function FineDust() {
     return (
         <div>
-            미세먼지
+            <div className="finedust-wrap">
+                <div className="finedust">
+                    미세먼지
+                </div>
+            </div>
         </div>
     );
 }

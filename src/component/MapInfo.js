@@ -9,9 +9,8 @@ export default function MapInfo() {
         <div>
             <div className="map-info-container">
                 <div className="map-info">
-                    지도정보
-                    <componentDepth1.Map/>
                     <componentDepth1.Shelter/>
+                    <componentDepth1.Map/>
                     <componentDepth1.Favorites/>
                 </div>
             </div>

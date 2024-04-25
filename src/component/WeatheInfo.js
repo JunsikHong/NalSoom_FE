@@ -9,7 +9,6 @@ export default function WeatherInfo() {
         <>
             <div className="weather-info-container">
                 <div className="weather-info">
-                    날씨
                     <componentDepth1.Tempurature/>
                     <componentDepth1.FineDust/>
                 </div>

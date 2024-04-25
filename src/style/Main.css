@@ -1,20 +1,27 @@
-/* 기본 스타일 */
-.main {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 2em;
-}
+@media (max-width: 413px) {
+    .main-wrap {
+        margin: 0px 10px;
+    }
 
-/* 모바일 화면 */
-@media screen and (max-width: 80rem) {
     .main {
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); 
+        grid-gap: 30px;
     }
 }
 
-/* 데스크톱 화면 */
-@media screen and (min-width: 80rem) {
+@media (min-width: 414px) {
+    .main-wrap {
+        margin: 0px 30px;
+    }
+    
     .main {
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
     }
 }
+
+
+
+

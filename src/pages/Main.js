@@ -10,9 +10,9 @@ export default function Main() {
         <div>
             <div className='main-wrap'>
                 <div className='main'>
-                    <component.WeatherInfo />
-                    <component.MapInfo />
-                    <component.ShelterDetailInfo />
+                    <component.WeatherInfo/>
+                    <component.MapInfo/>
+                    <component.ShelterDetailInfo/>
                 </div>
                 <div className='main-etc'>
                     <component.Notification />
