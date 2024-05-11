@@ -1,0 +1,13 @@
+.shelter-detail-info-container {
+    min-width: 300px;
+    border: 1px solid #777;
+    padding: 15px;    
+
+}
+
+@media (min-width: 414px) {
+    .shelter-detail-info-container {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+}

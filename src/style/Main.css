@@ -1,0 +1,23 @@
+@media (max-width: 413px) {
+    .main-wrap {
+        margin: 0px 10px;
+    }
+
+    .main {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); 
+        grid-gap: 30px;
+    }
+}
+
+@media (min-width: 414px) {
+    .main-wrap {
+        margin: 0px 30px;
+    }
+    
+    .main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+}

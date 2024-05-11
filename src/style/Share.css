@@ -1,0 +1,9 @@
+.share-wrap {
+    width: 50px;
+    background-color: #777;
+    position: fixed;
+    bottom: 5%;
+    right: 2%;
+    border: 1px solid #777;
+    z-index: 100;
+}
