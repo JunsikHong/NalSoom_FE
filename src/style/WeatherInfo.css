@@ -1,0 +1,20 @@
+.weather-info-container {
+    min-width: 300px;
+    border: 1px solid #777;
+    padding: 15px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
+.weather-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tempurature-wrap {
+    border: 1px solid #777;
+}
+
+.finedust-wrap {
+    border: 1px solid #777;
+}
