@@ -27,7 +27,7 @@ export default function JoinInput({ act }) {
     },[joinPwValue]);
 
     //로그인 선택 시 로그인 페이지로 이동
-    function loginBtn() {
+    function loginPageBtn() {
         act({ state: 'login' });
     }
 
@@ -116,7 +116,7 @@ export default function JoinInput({ act }) {
     return (
         <div>
             <div className="login-page-btn-box">
-                <button className="login-page-btn" onClick={loginBtn}>로그인</button>
+                <button className="login-page-btn" onClick={loginPageBtn}>로그인</button>
             </div>
             <div className="join-input-box">
                 <input type='text' className="join-id" id="join-id" value={joinIdValue} onChange={(e) => {setJoinIdValue(e.target.value)}} placeholder="아이디를 입력하세요" />
