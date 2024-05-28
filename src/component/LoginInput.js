@@ -1,5 +1,5 @@
 import * as server from 'axiosConfig';
-import { useState  } from 'react';
+import { useState } from 'react';
 
 export default function LoginInput({ act }) {
 
@@ -12,13 +12,13 @@ export default function LoginInput({ act }) {
 
     //로그인 선택 시 jwt-login 실행
     function loginBtn() {
-        console.log(loginIdValue);
-        console.log(loginPwValue);
         server.userServer.post('/user/login', {
-            userId : loginIdValue,
-            userPw : loginPwValue
+            userId: loginIdValue,
+            userPw: loginPwValue
         }).then(response => {
-            console.log(response.data);
+            localStorage.setItem('grantType', response.data.grantType);
+            localStorage.setItem('accessToken', response.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
         });
     }
 
@@ -26,11 +26,12 @@ export default function LoginInput({ act }) {
     function joinPageBtn() {
         act({ state: 'join' });
     }
+
     return (
         <div>
             <div className='id-pw-input-box'>
-                <input type='text' placeholder='ID' id="id" className='id' value={loginIdValue} onChange={(e) => {setLoginIdValue(e.target.value)}}/>
-                <input type='password' placeholder='PW' id="pw" className='pw' value={loginPwValue} onChange={(e) => {setLoginPwValue(e.target.value)}}/>
+                <input type='text' placeholder='ID' id="id" className='id' value={loginIdValue} onChange={(e) => { setLoginIdValue(e.target.value) }} />
+                <input type='password' placeholder='PW' id="pw" className='pw' value={loginPwValue} onChange={(e) => { setLoginPwValue(e.target.value) }} />
             </div>
             <div className="login">
                 <button className='login-btn' onClick={loginBtn}>로그인</button>
