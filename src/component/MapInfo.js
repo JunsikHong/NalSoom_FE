@@ -10,7 +10,7 @@ export default function MapInfo() {
             <div className="map-info-container">
                 <div className="map-info">
                     <componentDepth1.Shelter/>
-                    <componentDepth1.Map/>
+                    <componentDepth1.MapData/>
                     <componentDepth1.Favorites/>
                 </div>
             </div>
