@@ -7,4 +7,11 @@ export default function (app) {
       changeOrigin: true,
     })
   );
+
+  app.use(
+    createProxyMiddleware({
+      target: 'https://apis.data.go.kr',
+      changeOrigin: true,
+    })
+  );
 };
