@@ -1,3 +1,8 @@
 import useKakaMapLoader from "./useKakaoMapLoader";
+import useForecasteInformation from "./useForecastInformation";
 
-export {useKakaMapLoader}
+export 
+{
+    useKakaMapLoader,
+    useForecasteInformation
+}

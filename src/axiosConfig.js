@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//spring 서버 요청
 const userServer = axios.create({
     baseURL: "https://localhost:443/api/v1",
     headers: {
@@ -7,7 +8,7 @@ const userServer = axios.create({
     }
 });
 
-// 요청 인터셉터 추가
+//spring 서버 요청 인터셉터 추가
 userServer.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem('accessToken');
@@ -20,8 +21,9 @@ userServer.interceptors.request.use(
     }
 );
 
+//날씨 서버 요청
 const weatherServer = axios.create({
-
+    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=' + process.env.REACT_APP_FORECAST_INFORMATION_API_KEY
 });
 
 export {
