@@ -13,9 +13,13 @@ export default function useForecasteInformation() {
         setCurrentDate(formatDate(now));
         setCurrentTime(formatTime(now));
         getPosition();
-        weatherRequest();
-
     }, []);
+
+    if (position !== null && position !== '' &&
+            currentDate !== null && currentDate !== '' &&
+            currentTime !== null && currentTime !== '') {
+            weatherRequest();
+        }
 
     //현재 날짜 YYYYMMDD 형식
     const formatDate = (date) => {
@@ -61,6 +65,11 @@ export default function useForecasteInformation() {
 
     return (
         <>
+            <div className='forecast-info-conatiner'>
+                <div className='forecaste-info'>
+
+                </div>
+            </div>
         </>
     );
 }
