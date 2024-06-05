@@ -1,11 +1,11 @@
-import MapInfo from "./MapInfo";
-import WeatherInfo from "./WeatheInfo";
+import ShelterMapInfo from "./ShelterMapInfo";
+import WeatherInfo from "./WeatherInfo";
 import ShelterDetailInfo from './ShelterDetailInfo';
 import Notification from "./Notification";
 import Share from "./Share";
 
 export {
-    MapInfo,
+    ShelterMapInfo,
     WeatherInfo,
     ShelterDetailInfo,
     Notification,

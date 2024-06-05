@@ -2,12 +2,14 @@ import Favorites from "./Favorites";
 import FineDust from "./FineDust";
 import MapData from "./MapData";
 import Shelter from "./Shelter";
-import Tempurature from "./Tempurature";
+import Temperature from "./Temperature";
+import useKakaMapLoader from "./useKakaoMapLoader";
 
 export {
     Favorites,
     FineDust,
     MapData,
     Shelter,
-    Tempurature
+    Temperature,
+    useKakaMapLoader
 }

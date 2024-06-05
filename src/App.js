@@ -6,7 +6,7 @@ import { Reset } from 'styled-reset';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //pages, component
-import Head from 'component/Head';
+import Head from 'headComponent/Head';
 import * as pages from 'pages';
 
 function App() {
