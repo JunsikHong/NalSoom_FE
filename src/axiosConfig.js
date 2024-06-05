@@ -23,7 +23,7 @@ userServer.interceptors.request.use(
 
 //날씨 서버 요청
 const weatherServer = axios.create({
-    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst?serviceKey=' + process.env.REACT_APP_FORECAST_INFORMATION_API_KEY
+    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
 });
 
 export {

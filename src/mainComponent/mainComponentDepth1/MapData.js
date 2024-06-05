@@ -1,4 +1,3 @@
-import * as componentDepth2 from './componentDepth2';
 
 export default function MapData() {
 
@@ -6,7 +5,6 @@ export default function MapData() {
         <div>
             <div className="map-wrap">
                 <div className="map">
-                    <componentDepth2.useKakaMapLoader/>
                 </div>
             </div>
         </div>
