@@ -26,7 +26,13 @@ const weatherServer = axios.create({
     baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
 });
 
+//특보 서버 요청
+const specialReportServer = axios.create({
+    baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
+});
+
 export {
     userServer,
-    weatherServer
+    weatherServer,
+    specialReportServer
 }

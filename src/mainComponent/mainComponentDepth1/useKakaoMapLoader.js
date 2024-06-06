@@ -3,9 +3,9 @@ import { Map, MapMarker, MapTypeControl, ZoomControl } from "react-kakao-maps-sd
 import { useEffect, useState } from "react";
 
 export default function useKakaMapLoader() {
-
-    const [position, setPosition] = useState({ lat: null, lng: null }); //현재 위치
     
+    const [position, setPosition] = useState({ lat: null, lng: null }); //현재 위치
+
     //카카오 지도 loading
     useKakaoLoaderOrigin({
         appkey: process.env.REACT_APP_KAKAO_MAP_API_KEY,
