@@ -1,19 +1,18 @@
 //css
 import 'style/WeatherInfo.css'
 
-//component
-import * as componentDepth1 from './mainComponentDepth1';
-
 //lib
 import { useState, useEffect } from 'react';
-import * as server from 'axiosConfig';
+import * as server from 'axiosConfig';  
+import { useSelector } from 'react-redux';
 
-export default function WeatherInfo({ weatherAPIInfoAct }) {
+export default function WeatherInfo({ weatherAPIInfoAct, specialReportAPIInfoAct }) {
 
+    const locationStore = useSelector((state) => state.location); //redux 값
     const [position, setPosition] = useState({ lat: null, lng: null }); //현재위치
     const [currentDate, setCurrentDate] = useState(''); //현재 날짜
     const [currentTime, setCurrentTime] = useState(''); //현재 시간
-    const [weatherInfo, setWeatherInfo] = useState(''); //예보정보
+    const [weatherInfo, setWeatherInfo] = useState(''); //예보 정보
     const [weatherGroupInfo, setWeatherGroupInfo] = useState([
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null },
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null },
@@ -21,9 +20,10 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null },
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null },
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null }
-    ]);
+    ]); //예보 정보 재구성
+    const [specialReportInfo, setSpecialReportInfo] = useState('') //특보 정보
 
-    //mount시에 현재 시간, 날짜, 위치 loading
+    //mount시에 현재 시간, 날짜, 위치 1번만 loading
     useEffect(() => {
         return () => {
             setCurrentDate(formatDate());
@@ -32,25 +32,37 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
         }
     }, []);
 
-    //state 변경될 때 예보 API 호출
+    useEffect(() => {
+        console.log(locationStore);
+    }, [locationStore]);
+
+    //state 변경될 때 예보 API, 특보 API 호출
     useEffect(() => {
         if (currentDate !== null && currentDate !== '' &&
             currentTime !== null && currentTime !== '' &&
             position !== null && position !== '') {
             weatherRequest();
+            specialReportRequest();
         }
     }, [position, currentDate, currentTime]);
 
-    //API 응답 데이터 셋팅 될 때 처리
+    //날씨 예보 API 응답 데이터 셋팅 될 때 처리
     useEffect(() => {
         weatherResponse();
     }, [weatherInfo]);
 
+    //특보 API 응답 데이터 셋팅 될 때 처리
+    useEffect(() => {
+        specialReportResponse();
+    }, [specialReportInfo]);
+
     //reducer로 Main페이지에 weatherInfo 전달
-    // useEffect(() => {
-    //     weatherAPIInfoAct({state : 'APIInfoUpdated',
-    //                        detail : weatherGroupInfo[0]});
-    // }, [weatherGroupInfo]);
+    useEffect(() => {
+        weatherAPIInfoAct({
+            state: 'weatherAPIInfoUpdated',
+            detail: weatherGroupInfo[0]
+        });
+    }, [weatherGroupInfo]);
 
     //현재 날짜 YYYYMMDD 형식
     function formatDate() {
@@ -136,8 +148,57 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
                     updatedWeatherGroupInfo[index % 6].WSD = element.fcstValue;
                 });
                 setWeatherGroupInfo(updatedWeatherGroupInfo); //복사본을 GroupInfo에 저장
-                console.log(weatherGroupInfo);
                 return 1;
+            }
+        }
+    }
+
+    //특보 요청 ENC키 응답없을 때 DEC키 요청
+    function specialReportRequest() {
+        server.specialReportServer.get('/getWthrWrnList', {
+            params: {
+                serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_ENC,
+                numOfRows: 10,
+                pageNo: 1,
+                dataType: 'JSON',
+                stnId: 108,
+                fromTmFc: '20240601',
+                toTmFc: currentDate
+            }
+        }).then(response => {
+            if (response.data !== null) {
+                if (response.data.response.header.resultCode !== '00') {
+                    server.specialReportServer.get('/getWthrWrnList', {
+                        params: {
+                            serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_DEC,
+                            numOfRows: 10,
+                            pageNo: 1,
+                            dataType: 'JSON',
+                            stnId: 108,
+                            fromTmFc: '20240601',
+                            toTmFc: currentDate
+                        }
+                    }).then(response => {
+                        setSpecialReportInfo(response);
+                    });
+                } else {
+                    setSpecialReportInfo(response);
+                }
+            } else {
+                setSpecialReportInfo(response);
+            }
+        });
+    }
+
+    //특보 응답 처리
+    //reducer로 Main페이지에 specialReportInfo 전달
+    function specialReportResponse() {
+        if (specialReportInfo !== null && specialReportInfo !== '') {
+            if (specialReportInfo.data.response.header.resultCode === '00') {
+                specialReportAPIInfoAct({
+                    state: 'specialReportAPIInfoUpdated',
+                    detail: specialReportInfo
+                });
             }
         }
     }
@@ -146,8 +207,6 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
         <>
             <div className="weather-info-container">
                 <div className="weather-info">
-                    <componentDepth1.Temperature />
-                    <componentDepth1.FineDust />
                     <ul className='weather-info-list'>
                         {weatherInfo !== null && weatherInfo !== '' ? (
                             weatherInfo.data.response.header.resultCode === '00' && weatherGroupInfo[5].WSD !== null ? (
