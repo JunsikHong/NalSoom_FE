@@ -1,5 +1,5 @@
 //css
-import '@Style/MapInfo.css'
+import '@Style/ShelterMapInfo.css'
 
 //component
 import MapData from '@MapComponent/MapData';

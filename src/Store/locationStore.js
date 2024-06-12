@@ -8,8 +8,8 @@ const useLocationStore = create((set) => ({
     updateLocation: () => {
         navigator.geolocation.getCurrentPosition(position => {
             set({
-                latitude: parseInt(position.coords.latitude),
-                longitude: parseInt(position.coords.longitude)
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
             });
         });
     }
