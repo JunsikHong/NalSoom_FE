@@ -33,8 +33,8 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
                 dataType: 'JSON',
                 base_date: currentDate,
                 base_time: currentTime,
-                nx: latitude,
-                ny: longitude
+                nx: parseInt(latitude),
+                ny: parseInt(longitude)
             }
         }).then(response => {
             setWeatherInfo(response);
@@ -69,7 +69,7 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
     useEffect(() => {
         weatherAPIInfoAct({ state: 'weatherAPIInfoUpdated', detail: weatherGroupInfo[0]}); 
     }, [weatherGroupInfo]);
-    
+
     return (
         <>
             <div className="weather-info-container">
