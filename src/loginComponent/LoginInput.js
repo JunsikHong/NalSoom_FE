@@ -1,4 +1,8 @@
-import * as server from 'axiosConfig';
+//css
+import '@Style/LoginInput.css'
+
+//lib
+import { userServer } from '@/axiosConfig';
 import { useState } from 'react';
 
 export default function LoginInput({ act }) {
@@ -12,7 +16,7 @@ export default function LoginInput({ act }) {
 
     //로그인 선택 시 jwt-login 실행
     function loginBtn() {
-        server.userServer.post('/user/login', {
+        userServer.post('/user/login', {
             userId: loginIdValue,
             userPw: loginPwValue
         }).then(response => {

@@ -1,13 +1,14 @@
 //css
-import './App.css';
+import '@/App.css';
 import { Reset } from 'styled-reset';
 
 //lib
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //pages, component
-import Head from 'headComponent/Head';
-import * as pages from 'pages';
+import Head from '@HeadComponent/Head';
+import Login from '@Pages/Login';
+import Main from '@Pages/Main';
 
 function App() {
   return (
@@ -16,8 +17,8 @@ function App() {
       <BrowserRouter>
         <Head />
         <Routes>
-          <Route path="*" element={<pages.Main />} />
-          <Route path="/login" element={<pages.Login />} />
+          <Route path="*" element={<Main />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>

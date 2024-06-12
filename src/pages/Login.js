@@ -1,7 +1,12 @@
-import 'style/Login.css';
+//css
+import '@Style/Login.css';
+
+//component
+import LoginInput from '@LoginComponent/LoginInput';
+import JoinInput from '@LoginComponent/JoinInput';
+
+//lib
 import { useReducer } from 'react';
-import LoginInput from 'loginComponent/LoginInput';
-import JoinInput from 'loginComponent/JoinInput';
 
 const loginStateFunc = (state, action) => {
     state = {

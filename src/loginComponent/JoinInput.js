@@ -1,5 +1,8 @@
-import 'style/Join.css';
-import * as server from 'axiosConfig';
+//css
+import '@Style/JoinInput.css';
+
+//lib
+import { userServer } from '@/axiosConfig';
 import { useState, useRef, useEffect } from 'react';
 
 export default function JoinInput({ act }) {
@@ -35,7 +38,7 @@ export default function JoinInput({ act }) {
     function idCheck() {
         var regex = /^[a-z]+[a-z0-9]{4,19}$/g;
         if (regex.test(joinIdValue)) {
-            server.userServer.post("/user/idDuplicateCheck", {
+            userServer.post("/user/idDuplicateCheck", {
                 userId: joinIdValue
             }).then(response => {
                 if (response.data) {
@@ -68,7 +71,7 @@ export default function JoinInput({ act }) {
 
     //이메일 발송
     function emailCheck() {
-        server.userServer.post("/user/emailCheck", {
+        userServer.post("/user/emailCheck", {
             email : joinEmailValue + '@' + joinEmailTailValue
         }).then(response => {
             if(response.data) {
@@ -98,7 +101,7 @@ export default function JoinInput({ act }) {
     //회원가입 선택 시 회원가입
     function joinBtn() {
         if (!joinBtnYnValue) {
-            server.userServer.post("/user/join", {
+            userServer.post("/user/join", {
                 userId: joinIdValue,
                 userPw: joinPwValue,
                 email: joinEmailValue + '@' + joinEmailTailValue
