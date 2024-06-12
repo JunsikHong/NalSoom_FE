@@ -1,65 +1,64 @@
 //css
-import 'style/Notification.css';
+import '@Style/Notification.css';
+
+//store
+import useLocationStore from '@Store/locationStore';
+import useTimeStore from '@Store/timeStore';
 
 //lib
 import { useEffect, useState } from 'react';
-import * as server from 'axiosConfig';  
+import { specialReportServer } from '@/axiosConfig';
+const { kakao } = window;
 
-export default function Notification({ locationInfoState, timeInfoState, specialReportAPIInfoAct }) {
 
+export default function Notification({ specialReportAPIInfoAct }) {
+
+    const { latitude, longitude } = useLocationStore(); //위치 정보
+    const { currentDate } = useTimeStore(); //날짜 시간 정보
+    const [locationNumber, setLocationNumber] = useState(''); //지역 정보
     const [specialReportInfo, setSpecialReportInfo] = useState('') //특보 정보
 
-    //주소정보, 시간정보 업데이트 될 때 특보 API요청
+    //지역 정보 업데이트
     useEffect(() => {
-        if (locationInfoState.detail.locationNumber !== null &&
-            locationInfoState.detail.locationNumber !== '' &&
-            timeInfoState.detail.currentDate !== null &&
-            timeInfoState.detail.currentDate !== '') {
-            specialReportRequest();
-        }
-    }, [locationInfoState, timeInfoState]);
+        const geocoder = new kakao.maps.services.Geocoder();
+        const coord = new kakao.maps.LatLng(latitude, longitude);
+        const callback = function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                setLocationNumber(result)
+            }
+        };
+        geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
+    }, []);
 
+    useEffect(() => {
+        console.log(locationNumber);
+        // specialReportRequest();
+    }, [locationNumber]);
+    
     //특보 API 응답 데이터 셋팅 될 때 처리
     useEffect(() => {
-        specialReportResponse();
+        // specialReportResponse();
     }, [specialReportInfo]);
 
-    //특보 요청 ENC키 응답없을 때 DEC키 요청
-    function specialReportRequest() {
-        server.specialReportServer.get('/getWthrWrnList', {
-            params: {
-                serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_ENC,
-                numOfRows: 10,
-                pageNo: 1,
-                dataType: 'JSON',
-                stnId: locationInfoState.detail.locationNumber,
-                fromTmFc: timeInfoState.detail.currentDate,
-                toTmFc: timeInfoState.detail.currentDate
-            }
-        }).then(response => {
-            if (response.data !== null) {
-                if (response.data.response.header.resultCode !== '00') {
-                    server.specialReportServer.get('/getWthrWrnList', {
-                        params: {
-                            serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_DEC,
-                            numOfRows: 10,
-                            pageNo: 1,
-                            dataType: 'JSON',
-                            stnId: locationInfoState.detail.locationNumber,
-                            fromTmFc: timeInfoState.detail.currentDate,
-                            toTmFc: timeInfoState.detail.currentDate
-                        }
-                    }).then(response => {
-                        setSpecialReportInfo(response);
-                    });
-                } else {
-                    setSpecialReportInfo(response);
-                }
-            } else {
-                setSpecialReportInfo(response);
-            }
-        });
-    }
+    //마운트 시 특보 정보 API 요청
+    useEffect(() => {
+        // specialReportServer.get('/getWthrWrnList', {
+        //     params: {
+        //         serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_DEC,
+        //         numOfRows: 10,
+        //         pageNo: 1,
+        //         dataType: 'JSON',
+        //         stnId: locationNumber,
+        //         fromTmFc: currentDate,
+        //         toTmFc: currentDate
+        //     }
+        // }).then(response => {
+        //     setSpecialReportInfo(response);
+        // });
+    }, []);
+
+
+  
 
     //특보 응답 처리
     //reducer로 Main페이지에 specialReportInfo 전달
@@ -78,12 +77,16 @@ export default function Notification({ locationInfoState, timeInfoState, special
         <div>
             <div className="notification-wrap">
                 <div className="notification">
+                    {/* 
                     {specialReportInfo !== null && specialReportInfo !== '' ? (
-                        <p className='special-report-info-element'>
-                            {specialReportInfo.detail.data.response.body.items.item[0].title}
-                        </p>
+                        specialReportInfo.data.response.header.resultCode === '00' ? (
+                            <p className='special-report-info-element'>
+                                {specialReportInfo.data.response.body.items.item[0].title}
+                            </p>
+                        ) : (<></>)
                     ) : (<></>)
                     }
+                    */}
                 </div>
             </div>
         </div>

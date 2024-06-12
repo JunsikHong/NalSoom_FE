@@ -1,13 +1,14 @@
 //css
-import 'style/Head.css';
+import '@Style/Head.css';
 
+//lib
 import { NavLink } from 'react-router-dom';
 
 //icon
 import { FaUser, FaBell } from "react-icons/fa6";
 
 //images
-import logo from 'images/nalsoomlogo.png';
+import nalsoomlogo from '@Images/nalsoomlogo.png';
 
 export default function Head() {
 
@@ -18,7 +19,7 @@ export default function Head() {
                     <div className='head-left'>
                         <ul className='head-logo-wrap'>
                             <li className='head-nalsoom'>
-                                <NavLink to="/"><img className='head-logo' src={logo} alt='logo'/></NavLink>
+                                <NavLink to="/"><img className='head-logo' src={nalsoomlogo} alt='logo'/></NavLink>
                             </li>
                         </ul>
                     </div>

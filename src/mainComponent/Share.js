@@ -1,4 +1,5 @@
-import 'style/Share.css';
+//css
+import '@Style/Share.css';
 
 export default function Share() {
     return(

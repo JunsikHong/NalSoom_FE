@@ -1,4 +1,5 @@
-import 'style/ShelterDetailInfo.css'
+//css
+import '@Style/ShelterDetailInfo.css'
 
 export default function ShelterDetailInfo() {
     return (
