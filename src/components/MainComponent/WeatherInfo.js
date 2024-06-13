@@ -6,8 +6,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { weatherServer } from '@/axiosConfig';
 
 //store
-import useLocationStore from '@Store/locationStore';
-import useTimeStore from '@Store/timeStore';
+import useLocationStore from '@/store/locationStore';
+import useTimeStore from '@/store/timeStore';
 
 export default function WeatherInfo({ weatherAPIInfoAct }) {
 

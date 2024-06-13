@@ -2,15 +2,15 @@
 import '@Style/Main.css';
 
 //component
-import Notification from '@MainComponent/Notification';
-import Share from '@MainComponent/Share';
-import ShelterDetailInfo from '@MainComponent/ShelterDetailInfo';
-import ShelterMapInfo from '@MainComponent/ShelterMapInfo';
-import WeatherInfo from '@MainComponent/WeatherInfo';
+import Notification from '@/components/MainComponent/Notification';
+import Share from '@/components/MainComponent/Share';
+import ShelterDetailInfo from '@/components/MainComponent/ShelterDetailInfo';
+import ShelterMapInfo from '@/components/MainComponent/ShelterMapInfo';
+import WeatherInfo from '@/components/MainComponent/WeatherInfo';
 
 //store
-import useLocationStore from '@Store/locationStore';
-import useTimeStore from '@Store/timeStore';
+import useLocationStore from '@/store/locationStore';
+import useTimeStore from '@/store/timeStore';
 
 //lib
 import { useEffect, useReducer } from 'react';
@@ -41,6 +41,9 @@ const shelterAPIInfo = (state, action) => {
 }
 
 export default function Main() {
+    
+    const { latitude, longitude, updateLocation } = useLocationStore(); //위치 정보
+    const { currentDate, currentTime, formatDateTime } = useTimeStore(); //날짜 시간 정보
 
     const [weatherAPIInfoState, weatherAPIInfoAct] = useReducer(weatherAPIInfo, {
         state: '',
@@ -57,15 +60,11 @@ export default function Main() {
         detail: null
     }); //대피소정보
 
-    const { latitude, longitude, updateLocation } = useLocationStore(); //위치 정보
-    const { currentDate, currentTime, formatDateTime } = useTimeStore(); //날짜 시간 정보
-
     //위치, 시간 정보 초기화
     useEffect(() => {
         updateLocation();
         formatDateTime();
     }, []);
-
 
     return (
         <div>
@@ -76,7 +75,6 @@ export default function Main() {
                      currentDate !== '' && currentTime !== '' && 
                         <WeatherInfo weatherAPIInfoAct={weatherAPIInfoAct} />}
                     
-
                     {/* 대피소 Component에 위치정보, 날씨정보, 특보정보, 대피소정보 변경함수 전달 */}
                     {latitude !== 0 && longitude !== 0 &&
                      weatherAPIInfoState.state === 'weatherAPIInfoUpdated' &&
@@ -97,7 +95,6 @@ export default function Main() {
                      currentDate !== '' && currentTime !== '' && 
                         <Notification specialReportAPIInfoAct={specialReportAPIInfoAct} />}
 
-                    
                     {/* 공유 Component에 특보정보 전달 */}
                     {shelterAPIInfoState === 'shelterAPIInfoUpdated' &&
                         <Share specialReportAPIInfoState={specialReportAPIInfoState} />}
