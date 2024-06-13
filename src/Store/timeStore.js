@@ -2,9 +2,10 @@
 import { create } from "zustand";
 
 const useTimeStore = create((set) => ({
-    currentDate : '',
-    currentTime : '',
+    currentDate : '', //현재 날짜
+    currentTime : '', //현재 시간 -1
 
+    //현재 날짜, 시간 불러오는 함수
     formatDateTime : () => {
         const date = new Date();
         const year = date.getFullYear();

@@ -4,14 +4,15 @@ module.exports = {
     webpack: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            '@HeadComponent': path.resolve(__dirname, 'src/HeadComponent'),
-            '@LoginComponent': path.resolve(__dirname, 'src/LoginComponent'),
-            '@MainComponent': path.resolve(__dirname, 'src/MainComponent'),
-            '@MapComponent': path.resolve(__dirname, 'src/MainComponent/MapComponent'),
-            '@Pages': path.resolve(__dirname, 'src/Pages'),
-            '@Style': path.resolve(__dirname, 'src/Style'),
-            '@Store': path.resolve(__dirname, 'src/Store'),
-            '@Images' : path.resolve(__dirname, 'src/Images')
+            '@HeadComponent': path.resolve(__dirname, 'src/components/HeadComponent'),
+            '@LoginComponent': path.resolve(__dirname, 'src/components/LoginComponent'),
+            '@MainComponent': path.resolve(__dirname, 'src/components/MainComponent'),
+            '@MapComponent': path.resolve(__dirname, 'src/components/MainComponent/MapComponent'),
+            '@Pages': path.resolve(__dirname, 'src/pages'),
+            '@Style': path.resolve(__dirname, 'src/style'),
+            '@Store': path.resolve(__dirname, 'src/store'),
+            '@Images' : path.resolve(__dirname, 'src/images'),
+            '@Services': path.resolve(__dirname, 'src/services')
         }
     }
 };

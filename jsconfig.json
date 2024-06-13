@@ -2,14 +2,15 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-          "@HeadComponent/*": ["./src/HeadComponent/*"],
-          "@LoginComponent/*": ["./src/LoginComponent/*"],
-          "@MainComponent/*": ["./src/MainComponent/*"],
-          "@MapComponent/*": ["./src/MainComponent/MapComponent/*"],
-          "@Pages/*": ["./src/Pages/*"],
-          "@Style/*": ["./src/Style/*"], 
-          "@Store/*": ["./src/Store/*"],
-          "@Images/*": ["./src/Images"],
+          "@HeadComponent/*": ["src/components/HeadComponent/*"],
+          "@LoginComponent/*": ["src/components/LoginComponent/*"],
+          "@MainComponent/*": ["src/components/MainComponent/*"],
+          "@MapComponent/*": ["src/components/MainComponent/MapComponent/*"],
+          "@Pages/*": ["src/pages/*"],
+          "@Style/*": ["./src/style/*"], 
+          "@Store/*": ["src/store/*"],
+          "@Images/*": ["./src/images"],
+          "@Services/*": ["./src/services"],
           "@/*": ["./src/*"]
       }
     },

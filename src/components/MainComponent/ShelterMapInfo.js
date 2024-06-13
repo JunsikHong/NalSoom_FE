@@ -2,9 +2,9 @@
 import '@Style/ShelterMapInfo.css'
 
 //component
-import MapData from '@MapComponent/MapData';
-import Favorites from '@MapComponent/MapData';
-import Shelter from '@MapComponent/MapData';
+import MapData from '@/components/MainComponent/MapComponent/MapData';
+import Favorites from '@/components/MainComponent/MapComponent/MapData';
+import Shelter from '@/components/MainComponent/MapComponent/MapData';
 
 export default function MapInfo() {
     return(

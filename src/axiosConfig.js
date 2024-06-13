@@ -31,8 +31,13 @@ const specialReportServer = axios.create({
     baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
 });
 
+const coolingCentreServer = axios.create({
+    baseURL: 'https://openapi.seoul.go.kr:8088'
+});
+
 export {
     userServer,
     weatherServer,
-    specialReportServer
+    specialReportServer,
+    coolingCentreServer
 }
