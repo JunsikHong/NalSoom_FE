@@ -17,14 +17,14 @@ export default function MapData() {
         var mapOption = { center: mapLocation, level: 3 }; //map 옵션
 
         var map = new kakao.maps.Map(mapContainer, mapOption); //map
-        var marker = new kakao.maps.Marker({position: mapLocation}); //marker
-        
+        var marker = new kakao.maps.Marker({ position: mapLocation }); //marker
+
         marker.setMap(map); //map에 marker 추가
     }, []);
 
     return (
         <div>
-            <div className="map-wrap">
+            <div className='map-wrap'>
                 <div className="map" id="map">
                 </div>
             </div>

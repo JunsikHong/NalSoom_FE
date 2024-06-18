@@ -1,0 +1,24 @@
+.shelter-wrap {
+    min-width: 100px;
+    margin-left: 10px;
+}
+
+.shelter {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.shelter li {
+    width: 100px;
+    height: 70px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: box-shadow 0.3s ease;
+    line-height: 70px;
+}
