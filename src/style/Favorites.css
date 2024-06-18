@@ -1,0 +1,24 @@
+.favorites-wrap {
+    margin-right: 10px;
+    min-width: 100px;
+}
+
+.favorites {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.favorites li {
+    width: 100px;
+    height: 70px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: box-shadow 0.3s ease;
+    line-height: 70px;
+}

@@ -87,7 +87,7 @@ export default function Notification({ specialReportAPIInfoAct }) {
                 numOfRows: 10,
                 pageNo: 1,
                 dataType: 'JSON',
-                stnId: result1,
+                stnId: result1.region_1depth_name,
                 fromTmFc: currentDate,
                 toTmFc: currentDate
             }

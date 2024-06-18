@@ -5,7 +5,7 @@ const {kakao} = window;
 const useLocationStore = create((set) => ({
     latitude: 0, //위도
     longitude: 0, //경도
-    locationNumber: '',
+    locationNumber: null, //지역
 
     //사용자 위도, 경도 불러오는 함수
     updateLocation: () => {
@@ -22,7 +22,7 @@ const useLocationStore = create((set) => ({
         const coord = new kakao.maps.LatLng(latitude, longitude);
         const callback = function (result, status) {
             if (status === kakao.maps.services.Status.OK) {
-                set({locationNumber: result[0].address.region_1depth_name});
+                set({locationNumber: result[0].address});
             }
         };
         geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);

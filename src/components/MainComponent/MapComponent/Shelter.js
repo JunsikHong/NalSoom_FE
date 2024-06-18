@@ -1,3 +1,6 @@
+//css
+import '@Style/Shelter.css'
+
 export default function Shelter() {
     return(
         <div>
