@@ -85,8 +85,7 @@ export default function Main() {
                             shelterAPIInfoAct={shelterAPIInfoAct} />}
                     
                     {/* 대피소 상세 Component에 대피소정보 전달 */}
-                    {shelterAPIInfoState === 'shelterAPIInfoUpdated' &&
-                        <ShelterDetailInfo shelterAPIInfoState={shelterAPIInfoState} /> }
+                    <ShelterDetailInfo shelterAPIInfoState={shelterAPIInfoState} />
                     
                 </div>
                 <div className='main-etc'>

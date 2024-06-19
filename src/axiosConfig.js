@@ -23,21 +23,22 @@ userServer.interceptors.request.use(
 
 //날씨 서버 요청
 const weatherServer = axios.create({
-    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
+    baseURL: 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
 });
 
 //특보 서버 요청
 const specialReportServer = axios.create({
-    baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
+    baseURL: 'http://apis.data.go.kr/1360000/WthrWrnInfoService'
 });
 
-const coolingCentreServer = axios.create({
-    baseURL: 'https://openapi.seoul.go.kr:8088'
+//서울 공공데이터 서버 요청
+const seoulDataServer = axios.create({
+    baseURL: 'http://openapi.seoul.go.kr:8088'
 });
 
 export {
     userServer,
     weatherServer,
     specialReportServer,
-    coolingCentreServer
+    seoulDataServer
 }

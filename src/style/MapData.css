@@ -1,8 +1,10 @@
-.map-wrap {
-    width: 100%;
-    height: 100%;
-}
+
 #map {
     width: 80vh;
-    height: 100%;
+    height: 50vh;
+}
+
+.marker-style {
+
+    text-align: center;
 }

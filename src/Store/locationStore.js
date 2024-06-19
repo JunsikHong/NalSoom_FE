@@ -17,6 +17,11 @@ const useLocationStore = create((set) => ({
         });
     },
 
+    setLocation: (selectLocation) => {
+        set({latitude : selectLocation.latitude});
+        set({longitude : selectLocation.longitude});
+    },
+
     updateLocationNumber: (latitude, longitude) => {
         const geocoder = new kakao.maps.services.Geocoder();
         const coord = new kakao.maps.LatLng(latitude, longitude);
@@ -27,7 +32,6 @@ const useLocationStore = create((set) => ({
         };
         geocoder.coord2Address(coord.getLng(), coord.getLat(), callback);
     }
-    
 }));
 
 export default useLocationStore;
