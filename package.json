@@ -21,7 +21,7 @@
     "zustand": "^4.5.2"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=_wildcard.example.com+2.pem SSL_KEY_FILE=_wildcard.example.com+2-key.pem HOST=0.0.0.0 craco start",
+    "start": "craco start",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject"

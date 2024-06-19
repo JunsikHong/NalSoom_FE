@@ -30,7 +30,7 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
         weatherServer.get('/getUltraSrtFcst', {
             params: {
                 serviceKey: process.env.REACT_APP_FORECAST_INFORMATION_API_KEY_DEC,
-                numOfRows: 70,
+                numOfRows: 60,
                 pageNo: 1,
                 dataType: 'JSON',
                 base_date: currentDate,
@@ -51,16 +51,16 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
                 const updatedWeatherGroupInfo = [...weatherGroupInfo]; //state 복사본 생성
                 weatherInfo.data.response.body.items.item.map((element, index) => { //반복 시 0~5인덱스에만 저장
                     updatedWeatherGroupInfo[index % 6].fcstTime = element.fcstTime;
-                    updatedWeatherGroupInfo[index % 6].LGT = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].PTY = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].RN1 = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].SKY = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].T1H = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].REH = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].UUU = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].VVV = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].VEC = element.fcstValue;
-                    updatedWeatherGroupInfo[index % 6].WSD = element.fcstValue;
+                    element.category === 'LGT' && (updatedWeatherGroupInfo[index % 6].LGT = element.fcstValue)
+                    element.category === 'PTY' && (updatedWeatherGroupInfo[index % 6].PTY = element.fcstValue)
+                    element.category === 'RN1' && (updatedWeatherGroupInfo[index % 6].RN1 = element.fcstValue)
+                    element.category === 'SKY' && (updatedWeatherGroupInfo[index % 6].SKY = element.fcstValue)
+                    element.category === 'T1H' && (updatedWeatherGroupInfo[index % 6].T1H = element.fcstValue)
+                    element.category === 'REH' && (updatedWeatherGroupInfo[index % 6].REH = element.fcstValue)
+                    element.category === 'UUU' && (updatedWeatherGroupInfo[index % 6].UUU = element.fcstValue)
+                    element.category === 'VVV' && (updatedWeatherGroupInfo[index % 6].VVV = element.fcstValue)
+                    element.category === 'VEC' && (updatedWeatherGroupInfo[index % 6].VEC = element.fcstValue)
+                    element.category === 'WSD' && (updatedWeatherGroupInfo[index % 6].WSD = element.fcstValue)
                 });
                 setWeatherGroupInfo(updatedWeatherGroupInfo); //복사본을 GroupInfo에 저장
             }
@@ -69,7 +69,6 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
 
     //reducer로 Main페이지에 weatheInfo 전달
     useEffect(() => {
-        console.log(weatherGroupInfo);
         weatherAPIInfoAct({ state: 'weatherAPIInfoUpdated', detail: weatherGroupInfo[0] });
     }, [weatherGroupInfo]);
 
@@ -106,7 +105,7 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
                                 <div className='weather-info-current-element'>
                                     <p className='weather-info-current-location'>{locationNumber.region_1depth_name + ' ' + locationNumber.region_2depth_name + ' ' + locationNumber.region_3depth_name}</p>
                                     <p className='weather-info-current-time'>{formatTimeString(weatherGroupInfo[0].fcstTime)}</p>
-                                    <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === 1 ? <WiDaySunny size={90} color='#000' /> : <WiCloud size={90} color='#000' />}</p>
+                                    <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === '1' ? <WiDaySunny size={90} color='#000' /> : <WiCloud size={90} color='#000' />}</p>
                                     <p className='weather-info-current-t1h'>{weatherGroupInfo[0].T1H}<WiCelsius size={35} color='#000' /></p>
                                 </div>
                             ) : (<p className='weather-info-error'>서버로부터 날씨정보를 불러오지 못했습니다</p>)
@@ -118,7 +117,7 @@ export default function WeatherInfo({ weatherAPIInfoAct }) {
                                 weatherGroupInfo.map((item, idx) => (
                                     <li className='weather-info-element' key={'weather-info-element' + idx}>
                                         <p className='weather-info-time'>{formatTimeString(item.fcstTime)}</p>
-                                        <p className='weather-info-sky'>{item.SKY === 1 ? <WiDaySunny size={24} color='#000' /> : <WiCloud size={35} color='#000' />}</p>
+                                        <p className='weather-info-sky'>{item.SKY === '1' ? <WiDaySunny size={35} color='#000' /> : <WiCloud size={35} color='#000' />}</p>
                                         <p className='weather-info-t1h'>{item.T1H}<WiCelsius size={24} color='#000' /></p>
                                     </li>
                                 ))
