@@ -2,7 +2,7 @@
 import { create } from "zustand";
 
 const useShelterStore = create((set) => ({
-    currentShelterType: '',
+    currentShelterType: 'coolingCentre',
     currentShelter: null,
     
     setCurrentShelter : (currentShelterInfo) => {
