@@ -14,7 +14,7 @@ export default function ShelterDetailInfo() {
                 <div className="shelter-detail-info">
                     {currentShelter !== null && currentShelterType === 'coolingCentre' && (
                         <div>
-                            <div>대피소 명칭 : {currentShelter.R_AREA_NUM}</div>
+                            <div>대피소 명칭 : {currentShelter.R_AREA_NM}</div>
                             <div>도로명 주소 : {currentShelter.R_DETL_ADD}</div>
                             <div>지번 주소 : {currentShelter.J_DETL_ADD}</div>
                             <div>사용가능 인원 : {currentShelter.USE_PRNB}</div>
@@ -28,7 +28,7 @@ export default function ShelterDetailInfo() {
 
                     {currentShelter !== null && currentShelterType === 'heatingCentre' && (
                         <div>
-                            <div>대피소 명칭 : {currentShelter.R_AREA_NUM}</div>
+                            <div>대피소 명칭 : {currentShelter.R_AREA_NM}</div>
                             <div>도로명 주소 : {currentShelter.R_DETL_ADD}</div>
                             <div>사용가능 인원 : {currentShelter.USE_PRNB}</div>
                             <div>열풍기 보유 대수 : {currentShelter.HEAT1_CNT}</div>

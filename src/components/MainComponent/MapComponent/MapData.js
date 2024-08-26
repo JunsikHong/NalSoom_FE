@@ -2,87 +2,19 @@
 import '@Style/MapData.css'
 
 //lib
-import { useEffect, useMemo, useState } from "react";
-import { seoulDataServer } from '@/axiosConfig';
 import useLocationStore from '@/store/locationStore';
 import useShelterStore from '@Store/shelterStore';
+import { useQuery } from '@tanstack/react-query';
+import { getShelterData } from '@Services/useShelterAPI'
 const { kakao } = window;
 
 export default function MapData() {
 
     const { latitude, longitude } = useLocationStore(); //위도 경도 정보
     const { currentShelterType, setCurrentShelter, setCurrentShelterType } = useShelterStore(); //현재 선택한 대피소 정보
-    const [coolingCentreInfo, setCoolingCentreInfo] = useState([]); //무더위 쉼터 정보
-    const [coolingCentreState, setCoolingCentreState] = useState(''); //무더위 쉼터 상태
-    const [heatingCentreInfo, setHeatingCentreInfo] = useState([]); //한파 쉼터 정보
-    const [heatingCentreState, setHeatingCentreState] = useState(''); //한파 쉼터 상태
-    const [finedustShelterInfo, setFinedustShelterInfo] = useState([]); //미세먼지 대피소 정보
-    const [finedustShelterState, setFinedustShelterState] = useState(''); //미세먼지 대피소 상태
 
-    //대피소정보 불러오기 및 지도 load
-    useEffect(() => {
-        switch (currentShelterType) {
-            case 'coolingCentre':
-                //무더위 쉼터
-                var coolingCentreResult = getCoolingCentre();
-                setCoolingCentreInfo(coolingCentreResult);
-                break;
-
-            case 'heatingCentre':
-                //한파 쉼터
-                var heatingCentreResult = getHeatingCentre();
-                setHeatingCentreInfo(heatingCentreResult);
-                break;
-
-            case 'finedustShelter':
-                //미세먼지 대피소
-                var finedustShelterResult = getFinedustShelter();
-                setFinedustShelterInfo(finedustShelterResult);
-                break;
-
-            default:
-                //무더위 쉼터
-                var coolingCentreResult = getCoolingCentre();
-                setCoolingCentreInfo(coolingCentreResult);
-                break;
-        }
-    }, [currentShelterType]);
-
-    //내 주변 필터링
-    useMemo(() => {
-        //const deltaLatitude = 0.045; // 위도에서 5km 범위
-        //const deltaLongitude = 0.057; // 경도에서 5km 범위 (서울 기준)
-
-        const deltaLatitude = 0.2; // 위도temp
-        const deltaLongitude = 0.2; // 경도temp
-
-        switch (currentShelterType) {
-            case 'coolingCentre':
-                coolingCentreFilter(deltaLatitude, deltaLongitude);
-                break;
-
-            case 'heatingCentre':
-                heatingCentreFilter(deltaLatitude, deltaLongitude);
-                break;
-
-            case 'finedustShelter':
-                finedustShelterFilter(deltaLatitude, deltaLongitude);
-                break;
-
-            default:
-                coolingCentreFilter(deltaLatitude, deltaLongitude);
-                break;
-        }
-    }, [coolingCentreState, heatingCentreState, finedustShelterState]);
-
-    //지도 메서드 호출
-    useEffect(() => {
-        //지도 load
-        const map = getMap();
-
-        //지도 마커 load
-        getMarker(map);
-    }, [coolingCentreState, heatingCentreState, finedustShelterState]);
+    //서울시 공공데이터 shelter data load
+    const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: () => getShelterData() });
 
     //카카오맵 load
     function getMap() {
@@ -92,40 +24,115 @@ export default function MapData() {
         var map = new kakao.maps.Map(mapContainer, mapOption); //map
         var marker = new kakao.maps.Marker({ position: mapLocation }); //marker
         marker.setMap(map); //map에 marker 추가
-        return map;
+        var bounds = map.getBounds(); //지도 현재 영역
+        var boundsStr = bounds.toString(); // 영역정보를 문자열로 얻어옵니다. ((남,서), (북,동)) 형식입니다
+
+        kakao.maps.event.addListener(map, 'dragend', function () {
+            var bounds = map.getBounds(); //지도 현재 영역
+            var boundsStr = bounds.toString(); // 영역정보를 문자열로 얻어옵니다. ((남,서), (북,동)) 형식입니다
+            inBoundsAddMarker(map, boundsStr);
+        });
+        return { map, boundsStr };
     }
 
-    //쉼터 마커
-    function getMarker(map) {
-        var coolingCentrePositions = [];
-        var heatingCentrePositions = [];
-        var finedustShelterPositions = [];
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-        switch (currentShelterType) {
-            case 'coolingCentre':
-                //무더위 쉼터
-                coolingCentreMarker(coolingCentrePositions, map, imageSrc);
-                break;
-
-            case 'heatingCentre':
-                //한파 쉼터
-                heatingCentreMarker(heatingCentrePositions, map, imageSrc);
-                break;
-
-            case 'finedustShelter':
-                //미세먼지 대피소
-                finedustShelterMarker(finedustShelterPositions, map, imageSrc);
-                break;
-
-            default:
-                //무더위 쉼터
-                coolingCentreMarker(coolingCentrePositions, map, imageSrc);
-                break;
+    //지도 현재 영역에 shelter data 있는지 검사하고 마커 추가
+    function inBoundsAddMarker(map, boundsStr) {
+        boundsStr = boundsStr.replace(/[()]/g, '').replace(/\s+/g, '').split(',');
+        let inBoundsLocation = null;
+        if (currentShelterType === 'coolingCentre') {
+            inBoundsLocation = data.resultArray1.filter((element) => {
+                return isLocationInBounds(element.LA, element.LO, boundsStr);
+            });
+            shelterAddMarker(inBoundsLocation, map);
+        } else if (currentShelterType === 'heatingCentre') {
+            inBoundsLocation = data.resultArray2.filter((element) => {
+                return isLocationInBounds(element.LOT, element.LAT, boundsStr);
+            });
+            shelterAddMarker(inBoundsLocation, map);
+        } else if (currentShelterType === 'finedustShelter') {
+            inBoundsLocation = data.resultArray3.filter((element) => {
+                return isLocationInBounds(element.MAP_COORD_X, element.MAP_COORD_Y, boundsStr);
+            });
+            shelterAddMarker(inBoundsLocation, map);
         }
     }
 
-    //클릭한 대피소 정보 표시
+    //WTM좌표 WGS84좌표로 변환
+    function convertXYtoLatLng(element) {
+        var geocoder = new kakao.maps.services.Geocoder()
+        geocoder.transCoord(element.MAP_COORD_X, element.MAP_COORD_Y, transCoordCB, {
+            input_coord: kakao.maps.services.Coords.WTM,
+            output_coord: kakao.maps.services.Coords.WGS84
+        });
+        
+        function transCoordCB(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                element.MAP_COORD_X = result[0].y
+                element.MAP_COORD_Y = result[0].x
+            }
+        }
+    }
+
+    //지도 현재 영역에 shelter 존재 여부 검사
+    function isLocationInBounds(lat, lng, boundsStr) {
+        const isLatInBounds = lat >= boundsStr[0] && lat <= boundsStr[2];
+        const isLonInBounds = lng >= boundsStr[1] && lng <= boundsStr[3];
+        return isLatInBounds && isLonInBounds;
+    };
+
+    //쉼터 마커 추가
+    function shelterAddMarker(shelterPositions, map) {
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+        if (currentShelterType === 'coolingCentre') {
+            shelterPositions.map((element) => {
+                var position = {
+                    content: `<div>${element.R_AREA_NM}</div>`,
+                    latlng: new kakao.maps.LatLng(element.LA, element.LO),
+                    info: element
+                };
+                shelterPositions.push(position);
+            });
+        } else if (currentShelterType === 'heatingCentre') {
+            shelterPositions.map((element) => {
+                var position = {
+                    content: `<div>${element.R_AREA_NM}</div>`,
+                    latlng: new kakao.maps.LatLng(element.LOT, element.LAT),
+                    info: element
+                };
+                shelterPositions.push(position);
+            });
+        } else if (currentShelterType === 'finedustShelter') {
+            shelterPositions.map((element) => {
+                var position = {
+                    content: `<div>${element.R_AREA_NM}</div>`,
+                    latlng: new kakao.maps.LatLng(element.MAP_COORD_X, element.MAP_COORD_Y),
+                    info: element
+                };
+                shelterPositions.push(position);
+            });
+        }
+
+        for (var i = 0; i < shelterPositions.length; i++) {
+            var imageSize = new kakao.maps.Size(24, 35);
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: shelterPositions[i].latlng,
+                image: markerImage,
+            });
+
+            var infowindow = new kakao.maps.InfoWindow({
+                content: shelterPositions[i].content
+            });
+
+            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(shelterPositions[i].info, currentShelterType));
+            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+        }
+    }
+
+    //쉼터 마커 클릭한 대피소 정보 표시
     function setShelterDetailInfo(info, type) {
         return function () {
             setCurrentShelter(info);
@@ -133,216 +140,29 @@ export default function MapData() {
         };
     }
 
-    //인포윈도우 표시 
+    //쉼터 마커 인포윈도우 open
     function makeOverListener(map, marker, infowindow) {
         return function () {
             infowindow.open(map, marker);
         };
     }
 
-    //인포윈도우를 닫는 
+    //쉼터 마커 인포윈도우 close
     function makeOutListener(infowindow) {
         return function () {
             infowindow.close();
         };
     }
 
-    //서울 공공데이터 api 무더위 쉼터 load
-    function getCoolingCentre() {
-        let resultArray = [];
-        const fetchData = async () => {
-            const result1 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/1/1000/');
-            const result2 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/1001/2000/');
-            const result3 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/2001/3000/');
-            const result4 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/3001/4000/');
-            const result5 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/4001/4135/');
-            resultArray.push(...result1.data.TbGtnHwcwP.row);
-            resultArray.push(...result2.data.TbGtnHwcwP.row);
-            resultArray.push(...result3.data.TbGtnHwcwP.row);
-            resultArray.push(...result4.data.TbGtnHwcwP.row);
-            resultArray.push(...result5.data.TbGtnHwcwP.row);
-            setCoolingCentreState(result1.data.TbGtnHwcwP.RESULT.CODE);
-        }
-        fetchData();
-        return resultArray;
+    //success, error 처리
+    if (isError) {
+        return <div>error : {error.message}</div>
     }
 
-    //서울 공공데이터 api 한파 쉼터 load
-    function getHeatingCentre() {
-        let resultArray = [];
-        let updatedArray = [];
-        let temp = {};
-        const fetchData = async () => {
-            const result1 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnCwP/1/1000/');
-            const result2 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnCwP/1001/1304/');
-            resultArray.push(...result1.data.TbGtnCwP.row);
-            resultArray.push(...result2.data.TbGtnCwP.row);
-
-            resultArray.map(item => {
-                const { latitude, longitude } = convertXYToLatLong(item.G2_XMIN, item.G2_YMIN);
-                temp = {item, LA: latitude, LO: longitude};
-                updatedArray.push(temp);
-            });
-
-            setHeatingCentreState(result1.data.TbGtnCwP.RESULT.CODE);
-        }
-        fetchData();
-        return updatedArray;
-    }
-
-    //서울 공공데이터 api 미세먼지 대피소 load
-    function getFinedustShelter() {
-        let resultArray = [];
-        let updatedArray = [];
-        let temp = {};
-        const fetchData = async () => {
-            const result1 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/shuntPlace/1/155/');
-            resultArray.push(...result1.data.shuntPlace.row);
-
-            updatedArray = resultArray.map(item => {
-                const {latitude, longitude} = convertXYToLatLong(item.G2_XMIN, item.G2_YMIN);
-                temp = {item, LA: latitude, LO: longitude};
-                updatedArray.push(temp);
-            });
-
-            setFinedustShelterState(result1.data.shuntPlace.RESULT.CODE);
-        }
-        fetchData();
-        return updatedArray;
-    }
-
-     //내 주변 무더위 쉼터 필터링
-     function coolingCentreFilter(deltaLatitude, deltaLongitude) {
-        const filteredShelters = coolingCentreInfo.filter((element) => {
-            return (
-                latitude - deltaLatitude <= element.LA && element.LA <= latitude + deltaLatitude &&
-                longitude - deltaLongitude <= element.LO && element.LO <= longitude + deltaLongitude
-            );
-        });
-        setCoolingCentreInfo(filteredShelters);
-    }
-
-    //내 주변 한파 쉼터 필터링
-    function heatingCentreFilter(deltaLatitude, deltaLongitude) {
-        const filteredShelters = heatingCentreInfo.filter((element) => {
-            return (
-                latitude - deltaLatitude <= element.LA && element.LA <= latitude + deltaLatitude &&
-                longitude - deltaLongitude <= element.LO && element.LO <= longitude + deltaLongitude
-            );
-        });
-        setHeatingCentreInfo(filteredShelters);
-    }
-
-    //내 주변 미세먼지 대피소 필터링
-    function finedustShelterFilter(deltaLatitude, deltaLongitude) {
-        const filteredShelters = finedustShelterInfo.filter((element) => {
-            return (
-                latitude - deltaLatitude <= element.LA && element.LA <= latitude + deltaLatitude &&
-                longitude - deltaLongitude <= element.LO && element.LO <= longitude + deltaLongitude
-            );
-        });
-        setFinedustShelterInfo(filteredShelters);
-    }
-
-    //무더위 쉼터 마커
-    function coolingCentreMarker(coolingCentrePositions, map, imageSrc) {
-        var type = 'coolingCentre';
-        coolingCentreInfo.map((element) => {
-            var position = {
-                content: `<div>${element.R_AREA_NM}</div>`,
-                latlng: new kakao.maps.LatLng(element.LA, element.LO),
-                info: element
-            };
-            coolingCentrePositions.push(position);
-        });
-
-        for (var i = 0; i < coolingCentrePositions.length; i++) {
-            var imageSize = new kakao.maps.Size(24, 35);
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: coolingCentrePositions[i].latlng,
-                image: markerImage,
-            });
-
-            var infowindow = new kakao.maps.InfoWindow({
-                content: coolingCentrePositions[i].content
-            });
-
-            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(coolingCentrePositions[i].info, type));
-            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-        }
-    }
-
-    //한파 쉼터 마커
-    function heatingCentreMarker(heatingCentrePositions, map, imageSrc) {
-        var type = 'heatingCentre';
-        heatingCentrePositions.map((element) => {
-            var position = {
-                content: `<div>${element.R_AREA_NM}</div>`,
-                latlng: new kakao.maps.LatLng(element.G2_XMIN, element.G2_YMIN),
-                info: element
-            };
-            heatingCentrePositions.push(position);
-        });
-
-        for (var i = 0; i < heatingCentrePositions.length; i++) {
-            var imageSize = new kakao.maps.Size(24, 35);
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: heatingCentrePositions[i].latlng,
-                image: markerImage,
-            });
-
-            var infowindow = new kakao.maps.InfoWindow({
-                content: heatingCentrePositions[i].content
-            });
-
-            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(heatingCentrePositions[i].info, type));
-            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-        }
-    }
-
-    //미세먼지 대피소 마커
-    function finedustShelterMarker(finedustShelterPositions, map, imageSrc) {
-        var type = 'finedustShelter';
-        finedustShelterPositions.map((element) => {
-            var position = {
-                content: `<div>${element.R_AREA_NM}</div>`,
-                latlng: new kakao.maps.LatLng(element.G2_XMIN, element.G2_YMIN),
-                info: element
-            };
-            finedustShelterPositions.push(position);
-        });
-
-        for (var i = 0; i < finedustShelterPositions.length; i++) {
-            var imageSize = new kakao.maps.Size(24, 35);
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: finedustShelterPositions[i].latlng,
-                image: markerImage,
-            });
-
-            var infowindow = new kakao.maps.InfoWindow({
-                content: finedustShelterPositions[i].content
-            });
-
-            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(finedustShelterPositions[i].info, type));
-            kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-            kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
-        }
-    }
-
-    //x,y좌표를 lat, lng로 변환
-    function convertXYToLatLong(x, y) {
-        const EARTH_RADIUS = 6371000;
-        const lng = (x / EARTH_RADIUS) * (180 / Math.PI);
-        const lat = (2 * Math.atan(Math.exp(y / EARTH_RADIUS)) - Math.PI / 2) * (180 / Math.PI);
-        return { lat, lng };
+    if (isSuccess) {
+        const { map, boundsStr } = getMap(); //map load
+        data.resultArray3.map((element) => {convertXYtoLatLng(element)}); //convertXYtoLatLng
+        inBoundsAddMarker(map, boundsStr); //add marker
     }
 
     return (
@@ -353,4 +173,5 @@ export default function MapData() {
             </div>
         </div>
     );
+
 }
