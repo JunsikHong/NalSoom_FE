@@ -1,4 +1,4 @@
-@media (max-width: 413px) {
+/* @media (max-width: 413px) {
     .main-wrap {
         margin: 0px 10px;
     }
@@ -19,5 +19,23 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 30px;
+    }
+} */
+
+.main-wrap {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main {
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column;
     }
 }

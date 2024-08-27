@@ -1,16 +1,20 @@
 .map-info-container {
-    min-width: 400px;
     background-color: #ffffff;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    padding: 15px;
-    margin-top: 50px;
     margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
 }
 
 .map-info {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .map-info {
+        flex-direction: column;
+    }
 }

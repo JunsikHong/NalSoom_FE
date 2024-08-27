@@ -72,10 +72,19 @@ export default function WeatherInfo() {
                 <div className="weather-info">
                     <div className='weather-info-current'>
                         <div className='weather-info-current-element'>
-                            <p className='weather-info-current-location'>{locationNumber.region_1depth_name + ' ' + locationNumber.region_2depth_name + ' ' + locationNumber.region_3depth_name}</p>
-                            <p className='weather-info-current-time'>{formatTimeString(weatherGroupInfo[0].fcstTime)}</p>
-                            <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === '1' ? <WiDaySunny size={90} color='#000' /> : <WiCloud size={90} color='#000' />}</p>
-                            <p className='weather-info-current-t1h'>{weatherGroupInfo[0].T1H}<WiCelsius size={35} color='#000' /></p>
+                            <div className='weather-info-current-element-head'>
+                                <p className='weather-info-current-location'>{locationNumber.region_1depth_name + ' ' + locationNumber.region_2depth_name + ' ' + locationNumber.region_3depth_name}</p>
+                                <p className='weather-info-current-time'>{formatTimeString(weatherGroupInfo[0].fcstTime)}</p>
+                            </div>
+                            <div className='weather-info-current-element-body'>
+                                <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === '1' ? <WiDaySunny size={90} color='#000' /> : <WiCloud size={90} color='#000' />}</p>
+                                <p className='weather-info-current-t1h'>{weatherGroupInfo[0].T1H}<WiCelsius size={35} color='#000' /></p>
+                            </div>
+                            <div className='weather-info-another-location'>
+                                <p>●</p>
+                                <p>○</p>
+                                <p>○</p>
+                            </div>
                         </div>
                     </div>
                     <ul className='weather-info-list'>

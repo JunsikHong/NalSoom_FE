@@ -11,6 +11,66 @@ export default function ShelterDetailInfo() {
     return (
         <>
             <div className="shelter-detail-info-container">
+                <ul className='shelter-detail-info-filter'>
+                    <li className='shelter-detail-info-search-box'>
+                        <input type='text' className='shelter-search-box' placeholder='통합검색'></input>
+                    </li>
+                    <li className='shelter-detail-info-search-time-condition'>
+                        <select className='shelter-time-condition'>
+                            <option value={'최신순'}>최신순</option>
+                            <option value={'과거순'}>과거순</option>
+                        </select>
+                    </li>
+                    <li className='shelter-detail-info-search-type-condition'>
+                        <select className='shelter-type-condition'>
+                            <option value={'total'}>통합</option>
+                            <option value={'coolingCentre'}>무더위쉼터</option>
+                            <option value={'heatingCentre'}>한파쉼터</option>
+                            <option value={'finedustShelter'}>미세먼지대피소</option>
+                        </select>
+                    </li>
+                </ul>
+                <ul className='shelter-detail-info-list'>
+                    <li className='shelter-detail-info-component'>
+                        <div className='shelter-detail-info-head'>
+                            <p className='shelter-detail-info-type'>
+                                무더위쉼터
+                            </p>
+                            <div className='shelter-detail-info-like-wrap'>
+                                <p className='shelter-detail-info-like-btn'>
+                                    ♥︎
+                                </p>
+                                <p className='shelter-detail-info-like-count'>
+                                    25
+                                </p>
+                            </div>
+                        </div>
+                        <div className='shelter-detail-info-body'>
+                            <p className='shelter-detail-info-name'>
+                                강동신용협동조합암사본점
+                            </p>
+                            <p className='shelter-detail-info-current-state'>
+                                현재운영중
+                            </p>
+                        </div>
+                        <div className='shelter-detail-info-foot'>
+                            <p className='shelter-detail-info-review-count'>
+                                💬 30
+                            </p>
+                            <div className='shelter-detail-info-review-wrap'>
+                                <p className='shelter-detail-info-review-firstline'>
+                                    너무 시원하고 좋아요
+                                </p>
+                                <p className='shelter-detail-info-more-btn'>
+                                    ⬇️
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+
+
                 <div className="shelter-detail-info">
                     {currentShelter !== null && currentShelterType === 'coolingCentre' && (
                         <div>
@@ -54,7 +114,7 @@ export default function ShelterDetailInfo() {
 
                     {currentShelter !== null && currentShelterType === 'finedustShelter' && (
                         <div>
-                            
+
                         </div>
                     )}
                 </div>
