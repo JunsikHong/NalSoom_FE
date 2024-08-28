@@ -2,8 +2,8 @@
 import '@Style/Login.css';
 
 //component
-import LoginInput from '@/components/LoginComponent/LoginInput';
-import JoinInput from '@/components/LoginComponent/JoinInput';
+import LoginInput from '@LoginComponent/LoginInput';
+import JoinInput from '@LoginComponent/JoinInput';
 
 //lib
 import { useReducer } from 'react';

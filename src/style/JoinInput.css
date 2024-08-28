@@ -1,5 +1,158 @@
-button.join-btn:disabled {
-    background-color: #cccccc; /* 회색 배경색 */
-    color: #666666; /* 텍스트 색상 */
-    cursor: not-allowed; /* 마우스 커서 모양 변경 */
-  }
+/* 회원가입 컴포넌트 전체 컨테이너 */
+.join-input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 350px;
+  margin-bottom: 20px;
+}
+
+.login-page-btn-box{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+}
+
+.login-page-btn {
+  border: none;
+  background-color: none;
+  color: #777;
+}
+
+.join-input-id-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.join-input-email-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.join-id {
+  width: 250px;
+}
+
+.join-pw {
+  width: 350px;
+}
+
+.join-pw-double-check{
+  width: 350px;
+}
+
+.join-email {
+  width: 125px;
+}
+
+.join-input-auth-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.email-auth-value {
+  width: 250px;
+}
+
+.join-input-pw-wrap,
+.join-input-double-check-pw-wrap {
+  display: flex;
+  position: relative;
+
+  align-items: center;
+}
+
+.join-input-box input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 중복 검사, 이메일 발송, 본인 인증 버튼 */
+.join-input-box .id-check,
+.join-input-box .pw-check,
+.join-input-box .email-check,
+.join-input-box .email-auth-btn {
+  padding: 10px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.join-input-box .id-check:hover,
+.join-input-box .pw-check:hover,
+.join-input-box .email-check:hover,
+.join-input-box .email-auth-btn:hover {
+  background-color: #357abd;
+}
+
+/* 이메일 도메인 선택 */
+.join-input-box .join-email-tail {
+ 
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  width: 125px;
+}
+
+.join-input-box .join-id-message,
+.join-input-box .join-pw-message,
+.join-input-box .join-email-message {
+  font-size: 14px;
+  color: #d9534f;
+}
+
+/* 회원가입 버튼 */
+.join-btn-box {
+  margin-top: 20px;
+}
+
+.join-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.join-pw {
+  padding-right: 30px; /* 눈 아이콘이 들어갈 공간 확보 */
+  width: 100%;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle-icon svg {
+  width: 20px;
+  height: 20px;
+  color: #888;
+}
+
+.password-toggle-icon:hover svg {
+  color: #000;
+}

@@ -2,10 +2,11 @@
 import '@Style/MapData.css'
 
 //lib
-import useLocationStore from '@/store/locationStore';
+import useLocationStore from '@Store/locationStore';
 import useShelterStore from '@Store/shelterStore';
 import { useQuery } from '@tanstack/react-query';
 import { getShelterData } from '@Services/useShelterAPI'
+import { useEffect } from 'react';
 const { kakao } = window;
 
 export default function MapData() {
@@ -14,7 +15,20 @@ export default function MapData() {
     const { currentShelterType, setCurrentShelter, setCurrentShelterType } = useShelterStore(); //현재 선택한 대피소 정보
 
     //서울시 공공데이터 shelter data load
-    const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: () => getShelterData() });
+    const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: getShelterData });
+    
+    //success, error 처리
+    useEffect(() => {
+        if (isError) {
+            return <div>error : {error.message}</div>
+        }
+        
+        if (isSuccess) {
+            const { map, boundsStr } = getMap();
+            data.resultArray3.map((element) => {convertXYtoLatLng(element)}); //convertXYtoLatLng
+            inBoundsAddMarker(map, boundsStr); //add marker
+        }
+    }, [data]);
 
     //카카오맵 load
     function getMap() {
@@ -152,17 +166,6 @@ export default function MapData() {
         return function () {
             infowindow.close();
         };
-    }
-
-    //success, error 처리
-    if (isError) {
-        return <div>error : {error.message}</div>
-    }
-
-    if (isSuccess) {
-        const { map, boundsStr } = getMap(); //map load
-        data.resultArray3.map((element) => {convertXYtoLatLng(element)}); //convertXYtoLatLng
-        inBoundsAddMarker(map, boundsStr); //add marker
     }
 
     return (

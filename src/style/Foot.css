@@ -1,0 +1,62 @@
+/* 푸터 전체 스타일 */
+.footer {
+    background-color: #333;
+    color: #777;
+    padding: 20px 0;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+/* 푸터 내용 섹션 스타일 */
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-section {
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+/* 로고 스타일 */
+.footer-section .logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* 퀵 링크 스타일 */
+.footer-section.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section.links ul li {
+    margin: 10px 0;
+}
+
+.footer-section.links ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section.links ul li a:hover {
+    color: #4caf50;
+}
+
+/* 연락처 섹션 스타일 */
+.footer-section.contact p {
+    margin: 10px 0;
+}
+
+/* 푸터 하단 스타일 */
+.footer-bottom {
+    border-top: 1px solid #555;
+    padding-top: 10px;
+    font-size: 14px;
+}

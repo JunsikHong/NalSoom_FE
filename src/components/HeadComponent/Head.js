@@ -29,7 +29,11 @@ export default function Head() {
                                 <NavLink to="/notification"><FaBell size={25}/></NavLink>
                             </li>
                             <li className="head-login">
-                                <NavLink to="/login"><FaUser size={25}/></NavLink>
+                                {
+                                    localStorage.getItem('grantType') && localStorage.getItem('accessToken') && localStorage.getItem('refreshToken') ?
+                                    <NavLink to='/mypage'><FaUser size={25}/></NavLink> : 
+                                    <NavLink to="/login"><FaUser size={25}/></NavLink>
+                                }
                             </li>
                         </ul>
                     </div>

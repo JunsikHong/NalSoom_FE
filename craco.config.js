@@ -5,6 +5,7 @@ module.exports = {
         alias: {
             '@': path.resolve(__dirname, 'src'),
             '@HeadComponent': path.resolve(__dirname, 'src/components/HeadComponent'),
+            '@FootComponent': path.resolve(__dirname, 'src/components/FootComponent'),
             '@LoginComponent': path.resolve(__dirname, 'src/components/LoginComponent'),
             '@MainComponent': path.resolve(__dirname, 'src/components/MainComponent'),
             '@MapComponent': path.resolve(__dirname, 'src/components/MainComponent/MapComponent'),
