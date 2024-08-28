@@ -2,11 +2,11 @@
 import '@Style/Main.css';
 
 //component
-import Notification from '@/components/MainComponent/Notification';
-import Share from '@/components/MainComponent/Share';
-import ShelterDetailInfo from '@/components/MainComponent/ShelterDetailInfo';
-import ShelterMapInfo from '@/components/MainComponent/ShelterMapInfo';
-import WeatherInfo from '@/components/MainComponent/WeatherInfo';
+import Notification from '@MainComponent/Notification';
+import Share from '@MainComponent/Share';
+import ShelterDetailInfo from '@MainComponent/ShelterDetailInfo';
+import ShelterMapInfo from '@MainComponent/ShelterMapInfo';
+import WeatherInfo from '@MainComponent/WeatherInfo';
 
 //store
 import useLocationStore from '@Store/locationStore';

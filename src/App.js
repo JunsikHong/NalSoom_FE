@@ -6,9 +6,11 @@ import { Reset } from 'styled-reset';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 //pages, component
-import Head from '@/components/HeadComponent/Head';
-import Login from '@/pages/Login';
-import Main from '@/pages/Main';
+import Head from '@HeadComponent/Head';
+import Foot from '@FootComponent/Foot';
+import Login from '@Pages/Login';
+import Main from '@Pages/Main';
+import Mypage from '@Pages/Mypage';
 
 function App() {
   return (
@@ -19,7 +21,9 @@ function App() {
         <Routes>
           <Route path="*" element={<Main />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Routes>
+        <Foot/>
       </BrowserRouter>
     </div>
   );

@@ -17,8 +17,8 @@ export default function ShelterDetailInfo() {
                     </li>
                     <li className='shelter-detail-info-search-time-condition'>
                         <select className='shelter-time-condition'>
-                            <option value={'최신순'}>최신순</option>
-                            <option value={'과거순'}>과거순</option>
+                            <option value={'가까운 순'}>가까운 순</option>
+                            <option value={'좋아요 많은순'}>좋아요 많은순</option>
                         </select>
                     </li>
                     <li className='shelter-detail-info-search-type-condition'>
