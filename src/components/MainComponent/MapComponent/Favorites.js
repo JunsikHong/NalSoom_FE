@@ -21,7 +21,7 @@ export default function Favorites() {
                     <li className="favorites3">서울시 강남구</li>
                     <li className="favorites4">서울시 서초구</li>
                     <li className="favorites5">서울시 구로구</li>
-                </ul>
+                </ul>      
             </div>
         </div>
     );

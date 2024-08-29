@@ -3,6 +3,8 @@ import '@Style/ShelterDetailInfo.css'
 
 //lib
 import useShelterStore from '@Store/shelterStore';
+import { FaSearch } from 'react-icons/fa';
+
 
 export default function ShelterDetailInfo() {
 
@@ -14,16 +16,16 @@ export default function ShelterDetailInfo() {
                 <ul className='shelter-detail-info-filter'>
                     <li className='shelter-detail-info-search-box'>
                         <input type='text' className='shelter-search-box' placeholder='통합검색'></input>
+                        <FaSearch className="shelter-search-icon" />
                     </li>
-                    <li className='shelter-detail-info-search-time-condition'>
+                    <li className='shelter-detail-info-search-condition'>
                         <select className='shelter-time-condition'>
                             <option value={'가까운 순'}>가까운 순</option>
                             <option value={'좋아요 많은순'}>좋아요 많은순</option>
                         </select>
-                    </li>
-                    <li className='shelter-detail-info-search-type-condition'>
+
                         <select className='shelter-type-condition'>
-                            <option value={'total'}>통합</option>
+                            <option value={'total'}>전체</option>
                             <option value={'coolingCentre'}>무더위쉼터</option>
                             <option value={'heatingCentre'}>한파쉼터</option>
                             <option value={'finedustShelter'}>미세먼지대피소</option>
