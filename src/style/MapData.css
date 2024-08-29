@@ -1,15 +1,8 @@
 #map {
-    width: 150vh;
-    height: 50vh;
+    min-width: 700px;
+    min-height: 300px;
 }
 
 .marker-style {
     text-align: center;
-}
-
-@media (max-width: 768px) {
-    #map {
-        width: 250vh;
-        height: 100vh;
-    }
 }

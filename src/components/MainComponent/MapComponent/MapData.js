@@ -16,16 +16,16 @@ export default function MapData() {
 
     //서울시 공공데이터 shelter data load
     const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: getShelterData });
-    
+
     //success, error 처리
     useEffect(() => {
         if (isError) {
             return <div>error : {error.message}</div>
         }
-        
+
         if (isSuccess) {
             const { map, boundsStr } = getMap();
-            data.resultArray3.map((element) => {convertXYtoLatLng(element)}); //convertXYtoLatLng
+            data.resultArray3.map((element) => { convertXYtoLatLng(element) }); //convertXYtoLatLng
             inBoundsAddMarker(map, boundsStr); //add marker
         }
     }, [data]);
@@ -78,7 +78,7 @@ export default function MapData() {
             input_coord: kakao.maps.services.Coords.WTM,
             output_coord: kakao.maps.services.Coords.WGS84
         });
-        
+
         function transCoordCB(result, status) {
             if (status === kakao.maps.services.Status.OK) {
                 element.MAP_COORD_X = result[0].y
@@ -171,8 +171,7 @@ export default function MapData() {
     return (
         <div>
             <div className='map-wrap'>
-                <div className="map" id="map">
-                </div>
+                <div id="map"></div>
             </div>
         </div>
     );

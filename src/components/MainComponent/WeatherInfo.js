@@ -11,6 +11,11 @@ import { getWeatherData } from '@Services/useWeatherAPI';
 import useLocationStore from '@Store/locationStore';
 import useTimeStore from '@Store/timeStore';
 
+//img
+import cloudy from '@Images/cloudy.png';
+import rainy from '@Images/rainy.png';
+import sunnyday from '@Images/sunnyday.png';
+
 export default function WeatherInfo() {
 
     const { latitude, longitude, locationNumber } = useLocationStore(); //위치 정보
@@ -66,19 +71,23 @@ export default function WeatherInfo() {
         weatherDataHandling(data);
     }
 
+    let backgroundImage = null;
+    if(weatherGroupInfo[0].SKY === '1') backgroundImage = sunnyday
+    else backgroundImage = cloudy;
+
     return (
         <>
             <div className="weather-info-container">
                 <div className="weather-info">
-                    <div className='weather-info-current'>
+                    <div className='weather-info-current' style={{backgroundImage : 'url('+backgroundImage+')', backgroundSize : "cover", backgroundPosition : "center"}}>
                         <div className='weather-info-current-element'>
                             <div className='weather-info-current-element-head'>
                                 <p className='weather-info-current-location'>{locationNumber.region_1depth_name + ' ' + locationNumber.region_2depth_name + ' ' + locationNumber.region_3depth_name}</p>
                                 <p className='weather-info-current-time'>{formatTimeString(weatherGroupInfo[0].fcstTime)}</p>
                             </div>
                             <div className='weather-info-current-element-body'>
-                                <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === '1' ? <WiDaySunny size={90} color='#000' /> : <WiCloud size={90} color='#000' />}</p>
-                                <p className='weather-info-current-t1h'>{weatherGroupInfo[0].T1H}<WiCelsius size={35} color='#000' /></p>
+                                <p className='weather-info-current-sky'>{weatherGroupInfo[0].SKY === '1' ? <WiDaySunny size={90} color='white' /> : <WiCloud size={90} color='white' />}</p>
+                                <p className='weather-info-current-t1h'>{weatherGroupInfo[0].T1H}<WiCelsius size={35} color='white' /></p>
                             </div>
                             <div className='weather-info-another-location'>
                                 <p>●</p>

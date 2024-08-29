@@ -1,8 +1,6 @@
-.shelter-detail-info-container {
-    border: 1px solid #777;
-    padding: 15px;    
+.shelter-detail-info-container { 
     margin-bottom: 30px;
-    width: 50%;
+    width: 900px;
 }
 
 @media (max-width: 768px) {
@@ -13,29 +11,37 @@
 
 .shelter-detail-info-filter {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-
-    list-style: none;
     margin-bottom: 10px;
-    padding: 0;
 }
+
 .shelter-detail-info-search-box {
-    align-items: flex-start;
+    position: relative;
+    width: 50%;
 }
 
 .shelter-search-box {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 40px 8px 12px; 
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1em;
+    box-sizing: border-box;
 }
 
-.shelter-detail-info-search-time-condition,
-.shelter-detail-info-search-type-condition {
-    margin-left: 10px;
-    justify-content: flex-end;
+.shelter-search-icon {
+    position: absolute;
+    right: 12px; /* 오른쪽 여백 */
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* 아이콘 클릭이 input에 영향을 주지 않도록 설정 */
+    font-size: 1.2em; /* 아이콘 크기 */
+    color: #ccc; /* 아이콘 색상 */
+}
+
+.shelter-detail-info-search-condition{
+    display: flex;
+    gap: 15px;
 }
 
 .shelter-time-condition,
@@ -48,6 +54,11 @@
 }
 
 @media (max-width: 768px) {
+    .shelter-detail-info-search-box {
+        position: relative;
+        width: 25%;
+    }
+    
     .shelter-detail-info-filter {
         flex-direction: column;
         align-items: flex-start;

@@ -1,11 +1,9 @@
-.favorites-wrap {
-    min-width: 100px;
-}
 
 .favorites {
+    height: 300px;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .favorites::-webkit-scrollbar {
@@ -21,12 +19,13 @@
 @media (max-width: 768px) {
     .favorites {
         flex-direction: row;
+        height: 70px;
     }
     .favorites li {
         border-bottom: none;
         border-right: 1px solid #dedede;
     }
-}
+} 
 
 .favorites li {
     width: 100px;
