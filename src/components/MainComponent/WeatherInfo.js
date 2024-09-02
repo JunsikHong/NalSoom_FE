@@ -35,19 +35,21 @@ export default function WeatherInfo() {
     //날씨 예보 응답 처리
     function weatherDataHandling(weatherData) {
         const updatedWeatherGroupInfo = [...weatherGroupInfo]; //state 복사본 생성
-        weatherData.response.body.items.item.map((element, index) => { //반복 시 0~5인덱스에만 저장
-            updatedWeatherGroupInfo[index % 6].fcstTime = element.fcstTime;
-            element.category === 'LGT' && (updatedWeatherGroupInfo[index % 6].LGT = element.fcstValue)
-            element.category === 'PTY' && (updatedWeatherGroupInfo[index % 6].PTY = element.fcstValue)
-            element.category === 'RN1' && (updatedWeatherGroupInfo[index % 6].RN1 = element.fcstValue)
-            element.category === 'SKY' && (updatedWeatherGroupInfo[index % 6].SKY = element.fcstValue)
-            element.category === 'T1H' && (updatedWeatherGroupInfo[index % 6].T1H = element.fcstValue)
-            element.category === 'REH' && (updatedWeatherGroupInfo[index % 6].REH = element.fcstValue)
-            element.category === 'UUU' && (updatedWeatherGroupInfo[index % 6].UUU = element.fcstValue)
-            element.category === 'VVV' && (updatedWeatherGroupInfo[index % 6].VVV = element.fcstValue)
-            element.category === 'VEC' && (updatedWeatherGroupInfo[index % 6].VEC = element.fcstValue)
-            element.category === 'WSD' && (updatedWeatherGroupInfo[index % 6].WSD = element.fcstValue)
-        });
+        if(weatherData.response !== null) {
+            weatherData.response.body.items.item.map((element, index) => { //반복 시 0~5인덱스에만 저장
+                updatedWeatherGroupInfo[index % 6].fcstTime = element.fcstTime;
+                element.category === 'LGT' && (updatedWeatherGroupInfo[index % 6].LGT = element.fcstValue)
+                element.category === 'PTY' && (updatedWeatherGroupInfo[index % 6].PTY = element.fcstValue)
+                element.category === 'RN1' && (updatedWeatherGroupInfo[index % 6].RN1 = element.fcstValue)
+                element.category === 'SKY' && (updatedWeatherGroupInfo[index % 6].SKY = element.fcstValue)
+                element.category === 'T1H' && (updatedWeatherGroupInfo[index % 6].T1H = element.fcstValue)
+                element.category === 'REH' && (updatedWeatherGroupInfo[index % 6].REH = element.fcstValue)
+                element.category === 'UUU' && (updatedWeatherGroupInfo[index % 6].UUU = element.fcstValue)
+                element.category === 'VVV' && (updatedWeatherGroupInfo[index % 6].VVV = element.fcstValue)
+                element.category === 'VEC' && (updatedWeatherGroupInfo[index % 6].VEC = element.fcstValue)
+                element.category === 'WSD' && (updatedWeatherGroupInfo[index % 6].WSD = element.fcstValue)
+            });
+        }
     }
 
     // 시간 문자열을 변환하는 함수

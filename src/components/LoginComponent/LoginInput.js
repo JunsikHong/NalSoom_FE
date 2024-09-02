@@ -5,7 +5,7 @@ import '@Style/LoginInput.css'
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUserAuthData } from '@Services/useUserLogin';
-import { getUserKakaoAuthData } from '@Services/useKakaoUserLogin';
+import { getUserKakaoAuthData } from '@Services/useKakaoUserLoginAPI';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 

@@ -77,6 +77,14 @@
     }
 }
 
+.no-found-wrap {
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 15px; 
+    margin-bottom: 20px; 
+    background-color: #f9f9f9; 
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); 
+}
 
 .shelter-detail-info-component {
     border: 1px solid #ddd; 
@@ -170,4 +178,18 @@
     cursor: pointer; 
     font-size: 18px; 
     color: #3498db;
+}
+
+.refresh-btn {
+    text-align: center;
+    width: 100%;
+    color: #777;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px; 
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 4px;
+    font-size: 1em;
+    box-sizing: border-box;
 }

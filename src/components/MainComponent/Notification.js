@@ -42,6 +42,9 @@ export default function Notification() {
     }
 
     if (isSuccess) {
+        if(data.response.header.resultCode === "03") {
+            return <></>
+        }
     }
 
     // 알림을 닫는 함수

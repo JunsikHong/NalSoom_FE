@@ -7,6 +7,7 @@
           "@LoginComponent/*": ["src/components/LoginComponent/*"],
           "@MainComponent/*": ["src/components/MainComponent/*"],
           "@MapComponent/*": ["src/components/MainComponent/MapComponent/*"],
+          "@ShelterComponent/*": ["src/components/MainComponent/ShelterComponent/*"],
           "@Pages/*": ["src/pages/*"],
           "@Style/*": ["./src/style/*"], 
           "@Store/*": ["src/store/*"],

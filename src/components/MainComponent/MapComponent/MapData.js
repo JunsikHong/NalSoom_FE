@@ -15,7 +15,7 @@ export default function MapData() {
     const { currentShelterType, setCurrentShelter, setCurrentShelterType } = useShelterStore(); //현재 선택한 대피소 정보
 
     //서울시 공공데이터 shelter data load
-    const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: getShelterData });
+    const { isSuccess, isError, data, error } = useQuery({ queryKey: ['shelterData'], queryFn: getShelterData, staleTime: 5 * 1000 });
 
     //success, error 처리
     useEffect(() => {

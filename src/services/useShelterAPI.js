@@ -1,6 +1,7 @@
 import { seoulDataServer } from '@/axiosConfig';
 
 export const getShelterData = async () => {
+    //무더위쉼터
     let resultArray1 = [];
     const result1 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/1/1000/');
     const result2 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnHwcwP/1001/2000/');
@@ -9,12 +10,14 @@ export const getShelterData = async () => {
     resultArray1.push(...result2.data.TbGtnHwcwP.row);
     resultArray1.push(...result3.data.TbGtnHwcwP.row);
     
+    //한파쉼터
     let resultArray2 = [];
     const result6 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnCwP/1/1000/');
     const result7 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/TbGtnCwP/1001/1304/');
     resultArray2.push(...result6.data.TbGtnCwP.row);
     resultArray2.push(...result7.data.TbGtnCwP.row);
 
+    //미세먼지대피소
     let resultArray3 = [];
     const result8 = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/shuntPlace/1/155/');
     resultArray3.push(...result8.data.shuntPlace.row);
