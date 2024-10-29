@@ -10,41 +10,34 @@ import { getSpecialReportData } from '@Services/useSpecialReportAPI';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
 
-
 export default function Notification() {
 
-    const [isVisible, setIsVisible] = useState(true); //알림창 표시여부
+    const [ isVisible, setIsVisible ] = useState(isDateIn()); //알림창 표시여부
     const { locationCode } = useLocationStore(); //위치 정보
     const { currentDate } = useTimeStore(); //날짜 시간 정보
-
-    //알림창 표시여부확인
-    useEffect(() => {
-        const hideUntil = localStorage.getItem('hideNotificationUntil');
-        if (hideUntil && new Date() < new Date(hideUntil)) {
-            setIsVisible(false);
-        }
-    }, []);
+    const [ specialReportInfo, setSpecialReportInfo ] = useState();
     
     //특보 API Fetching
-    const { isLoading, isSuccess, isError, data, error } = useQuery({ queryKey: ['specialReportData'], queryFn: () => getSpecialReportData(locationCode, currentDate) });
+    const specialReportData = useQuery({ queryKey: ['specialReportData'], queryFn: () => getSpecialReportData(locationCode, currentDate) });
     
+    useEffect(() => {
+        if(specialReportData.isSuccess && specialReportData.data.response.header.resultCode === '00') {
+            setSpecialReportInfo(specialReportData.data.response.body.items.item[0]);
+        } 
+    }, [specialReportData.isSuccess]);
+
     //visible, loading, success, error 처리
     if (!isVisible) {
         return null;
     }
 
-    if (isLoading) {
-        return <div>loading...</div>
-    }
-
-    if (isError) {
-        return <div>error : {error.message}</div>
-    }
-
-    if (isSuccess) {
-        if(data.response.header.resultCode === "03") {
-            return <></>
+    // 표시 여부 함수
+    function isDateIn () {
+        const hideUntil = localStorage.getItem('hideNotificationUntil');
+        if (hideUntil && new Date() < new Date(hideUntil)) {
+            return false;
         }
+        return true;
     }
 
     // 알림을 닫는 함수
@@ -62,27 +55,24 @@ export default function Notification() {
 
     return (
         <>
-            <div className="notification-wrap">
-                <div className="notification-head">
-                    <div className='notification-closeDelay'>
-                        <input type='checkbox' onChange={closeNotificationForADay} />
-                        <p>1일동안 보이지 않기</p>
+            {specialReportInfo && 
+                <div className="notification-wrap">
+                    <div className="notification-head">
+                        <div className='notification-closeDelay'>
+                            <input type='checkbox' onChange={closeNotificationForADay} />
+                            <p>1일동안 보이지 않기</p>
+                        </div>
+                        <div className='notification-closebtn' onClick={closeNotification}>
+                            X
+                        </div>
                     </div>
-                    <div className='notification-closebtn' onClick={closeNotification}>
-                        X
+                    <div className="notification">
+                        <p className='special-report-info-element'>
+                            {specialReportInfo.length !== 0 && specialReportInfo.title}
+                        </p>
                     </div>
                 </div>
-                <div className="notification">
-                    {data !== null && data !== '' ? (
-                        data.response.header.resultCode === '00' ? (
-                            <p className='special-report-info-element'>
-                                {data.response.body.items.item[0].title}
-                            </p>
-                        ) : (<></>)
-                    ) : (<></>)
-                    }
-                </div>
-            </div>
+            }
         </>
     );
 }

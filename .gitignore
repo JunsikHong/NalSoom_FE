@@ -28,3 +28,6 @@ _wildcard.example.com+2.pem
 .env.development.local
 .env.test.local
 .env.production.local
+
+# key files
+/cert
