@@ -28,7 +28,7 @@ export default function Good({shelterItem}) {
     function goodClick () {
 
         //로그인 여부
-        if(localStorage.getItem('accessToken') === null && localStorage.getItem('accessToken') === '') {
+        if(localStorage.getItem('accessToken') === null || localStorage.getItem('accessToken') === '') {
             window.confirm('좋아요 기능은 회원만 사용할 수 있어요!') && navigate('/login');
             return;
         }

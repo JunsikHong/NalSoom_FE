@@ -28,8 +28,8 @@ export default function MapData() {
         if(sheltersData.isSuccess) {
             //map bound 안에 있는 정보 -> Add Marker
             const filteredData = filteringData();
-            addMarker(filteredData);
             if(filteredData.length !== 0) {
+                addMarker(filteredData);
                 setMapShelters(filteredData);
             }
         }
