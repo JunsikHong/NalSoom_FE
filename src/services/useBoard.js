@@ -1,7 +1,7 @@
 import { userServer } from '@/axiosConfig';
 
 //게시판 가져오기
-export const getBoardData = async (mapShelters) => {
+export const getBoardData = async (mapShelters, searchSorting) => {
     var response = null;
     if(mapShelters.length === 0) {
         response = await userServer.get('/board/shelter');
@@ -26,7 +26,6 @@ export const getGoodData = async () => {
 
 //좋아요 post
 export const postGoodData = async (shelterProperNum) => {
-    console.log(shelterProperNum)
     const response = await userServer.post('/good', {
         shelterProperNum : shelterProperNum
     });
@@ -40,7 +39,16 @@ export const deleteGoodData = async (goodProperNum) => {
 }
 
 //리뷰 가져오기
-export const getReviewData = async () => {
-    const response = await userServer.get('/review');
+export const getReviewDataList = async (shelterProperNum) => {
+    const response = await userServer.get(`/review/${shelterProperNum}`);
+    return response.data;
+}
+
+//리뷰 쓰기
+export const postReviewData = async (newReviewContent, shelterProperNum) => {
+    const response = await userServer.post('/review', {
+        reviewContent : newReviewContent,
+        shelterProperNum : shelterProperNum
+    });
     return response.data;
 }
