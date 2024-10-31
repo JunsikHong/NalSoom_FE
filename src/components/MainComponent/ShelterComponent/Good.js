@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { postGoodData, deleteGoodData } from '@Services/useBoard';
+import { postGoodData, deleteGoodData } from '@Services/useGood';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

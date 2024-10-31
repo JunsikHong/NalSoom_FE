@@ -21,25 +21,28 @@ export default function Notification() {
     const specialReportData = useQuery({ queryKey: ['specialReportData'], queryFn: () => getSpecialReportData(locationCode, currentDate) });
     
     useEffect(() => {
-        if(specialReportData.isSuccess && specialReportData.data.response.header.resultCode === '00') {
-            setSpecialReportInfo(specialReportData.data.response.body.items.item[0]);
+        if(specialReportData.isSuccess) {
+            var recentReport = specialReportData.data.response.body.items.item[0];
+            if(recentReport) {
+                setSpecialReportInfo(recentReport);
+            }
             setIsVisible(true);
         } 
-    }, [specialReportData.isSuccess]);
+    }, [specialReportData.isSuccess, specialReportInfo]);
 
     if(isVisible) {
         setTimeout(() => {
             setIsVisible(false);
-        }, 5000); // 3초 후에 창 닫기
+        }, 5000);
     }
-
+        
     return (
         <>
             {specialReportInfo && isVisible &&
                 <div className="notification-wrap">
                     <div className="notification">
                         <p className='special-report-info-element'>
-                            {specialReportInfo.length !== 0 && specialReportInfo.title}
+                            {specialReportInfo.title}
                         </p>
                     </div>
                 </div>

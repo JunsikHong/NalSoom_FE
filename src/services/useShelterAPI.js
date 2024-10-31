@@ -118,7 +118,7 @@ export const getSheltersData = async () => {
         result.shuntPlaceData[m].latitude = result.shuntPlaceData[m].MAP_COORD_Y;
         result.shuntPlaceData[m].longitude = result.shuntPlaceData[m].MAP_COORD_X;
         result.shuntPlaceData[m].shelterSN = result.shuntPlaceData[m].SN;
-        result.shuntPlaceData[m].R_AREA_NM = result.shuntPlaceData[m].ADR_NAM;
+        result.shuntPlaceData[m].R_AREA_NM = result.shuntPlaceData[m].SHUNT_NAM;
 
         if(result.shuntPlaceData[m].WKDY_USE_HR === '04:00-익일01:00') {
             if(formattedTime > 1 && formattedTime < 4) {
@@ -135,8 +135,8 @@ export const getSheltersData = async () => {
                 result.shuntPlaceData[m].useYN = true;
             }
         } else {
-            let beginTime = tempMatchedData[i].WKDY_USE_HR.slice(0,1);
-            let endTime = tempMatchedData[i].WKDY_USE_HR.slice(3,4);
+            let beginTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(0,1);
+            let endTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(3,4);
             if(formattedTime > beginTime && formattedTime < endTime) {
                 result.shuntPlaceData[m].useYN = true;
             } else { 

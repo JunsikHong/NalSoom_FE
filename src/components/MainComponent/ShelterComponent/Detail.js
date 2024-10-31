@@ -69,17 +69,27 @@ export default function Detail({ shelterItem }) {
 
                 {currentShelter !== null && currentShelter.type === 'shuntPlace' && (
                     <div className='shunt-place-detail-info'>
-                        <div>도로명 주소 : {currentShelter.ADR_NAM}</div>
+                        {currentShelter.ADR_NAM ? 
+                            <div className='shunt-place-detail-info-address'>{currentShelter.ADR_NAM}</div> :
+                            <div className='shunt-place-detail-info-address'>{currentShelter.HJD_NAM}</div>
+                        }
 
-                        <div>행정동 이름 : {currentShelter.HJD_NAM}</div>
-                        <div>사용가능 인원 : {currentShelter.HOU_CNT_M}</div>
-                        <div>시설 유형 : {currentShelter.EQUP_TYPE}</div>
-                        <div>전화번호 : {currentShelter.TEL_NO_CN}</div>
-                        <div>평일 이용 시간 : {currentShelter.WKDY_USE_HR}</div>
-                        <div>주말 이용 시간 : {currentShelter.WKND_USE_HR}</div>
-                        <div>회원제 여부 : {currentShelter.MEMBERSHIP_YN}</div>
-                        <div>면적 : {currentShelter.AREA}</div>
-                        <div>비고 : {currentShelter.REMARK}</div>
+                        <div className='shunt-place-detail-info-option'>
+                            {currentShelter.MEMBERSHIP_YN === 'Y' && <div>회원제</div>}
+                        </div>
+
+                        <div className='shunt-place-detail-info-operating'>
+                            {currentShelter.WKDY_USE_HR && <div>평일이용시간 <span>{currentShelter.WKDY_USE_HR}</span> / </div>}
+                            {currentShelter.WKND_USE_HR && <div>주말이용시간 <span>{currentShelter.WKND_USE_HR}</span> / </div>}
+                        </div>
+
+                        <div className='shunt-place-detail-info-count'>
+                            {currentShelter.HOU_CNT_M && <div>사용가능인원 <span>{currentShelter.HOU_CNT_M}</span> / </div>}
+                            {currentShelter.EQUP_TYPE && <div>시설유형 <span>{currentShelter.EQUP_TYPE}</span> / </div>}
+                            {currentShelter.TEL_NO_CN && <div>전화번호 <span>{currentShelter.TEL_NO_CN}</span> / </div>}
+                            {currentShelter.AREA && <div>면적 <span>{currentShelter.AREA}</span> / </div>}
+                            {currentShelter.REMARK && <div>비고 <span>{currentShelter.REMARK}</span> / </div>}
+                        </div>
                     </div>
                 )}
             </div>

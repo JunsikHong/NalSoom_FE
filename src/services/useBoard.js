@@ -1,54 +1,62 @@
+// import { userServer } from '@/axiosConfig';
+
+// //게시판 가져오기
+// export const getBoardData = async (mapShelters, searchTerm, searchShelterType, searchSorting, searchPaging) => {
+//     var response = null;
+
+//     var queryString = '/board/shelter';
+
+//     queryString.concat('?searchTerm=')
+//     if(searchTerm !== '') {
+//         queryString.concat(searchTerm);
+//     }
+
+//     queryString.concat('/searchShelterType=')
+//     if(searchShelterType !== '') {
+//         queryString.concat(searchShelterType);
+//     }
+
+//     queryString.concat('/searchSorting=')
+//     if(searchSorting !== '') {
+//         queryString.concat(searchSorting);
+//     }
+    
+//     if(searchSorting === 'distance' && mapShelters[0] !== undefined && mapShelters.length >= 1) {
+//         mapShelters = mapShelters.slice(searchPaging, searchPaging+10);
+//         const shelterSNArray = mapShelters.map(shelter => shelter.shelterSN);
+//         const typeArray = mapShelters.map(shelter => shelter.type);
+//         const shelterSN = `shelterSN=${shelterSNArray.join(',')}`;
+//         const type = `type=${typeArray.join(',')}`;
+//         queryString.concat(`/shelterSN=${shelterSN}`);
+//         queryString.concat(`&type=${type}`);
+//     } else {
+//         queryString.concat('/searchPaging=')
+//         queryString.concat(searchPaging);
+//     }
+
+//     response = await userServer.get(queryString);
+
+//     return response.data;
+// }
+
+
 import { userServer } from '@/axiosConfig';
 
-//게시판 가져오기
-export const getBoardData = async (mapShelters, searchSorting) => {
-    var response = null;
-    if(mapShelters.length === 0) {
-        response = await userServer.get('/board/shelter');
-    } else if (mapShelters.length === 1) {
+// 게시판 가져오기
+export const getBoardData = async (mapShelters, searchShelterType, searchSortBy, searchSortDirection, searchPaging, searchSize) => {
+    const queryParams = new URLSearchParams();
 
-    } else if (mapShelters.length > 1) {
-        mapShelters = mapShelters.slice(0,9);
-        const shelterSNArray = mapShelters.map(shelter => shelter.shelterSN);
-        const typeArray = mapShelters.map(shelter => shelter.type);
-        const shelterSN = `shelterSN=${shelterSNArray.join(',')}`;
-        const type = `type=${typeArray.join(',')}`;
-        response = await userServer.get(`/board/shelter/boundIn?${shelterSN}&${type}`);
+    queryParams.set('searchShelterType', searchShelterType || 'normal');
+    queryParams.set('searchSortBy', searchSortBy || 'good');
+    queryParams.set('searchSortDirection', searchSortDirection || 'desc');
+    if(searchSortBy === 'distance' && mapShelters[0] !== undefined && mapShelters.length > 0) {
+        queryParams.set('shelterProperNum', mapShelters.shelterProperNum.join(','));
     }
-    return response.data;
-}
+    queryParams.set('searchPaging', searchPaging || 0);
+    queryParams.set('searchSize', searchSize || 10);
 
-//좋아요 가져오기
-export const getGoodData = async () => {
-    const response = await userServer.get('/good');
-    return response.data;
-}
+    const queryString = `/board/shelter?${queryParams.toString()}`;
+    const response = await userServer.get(queryString);
 
-//좋아요 post
-export const postGoodData = async (shelterProperNum) => {
-    const response = await userServer.post('/good', {
-        shelterProperNum : shelterProperNum
-    });
-    return response.data;
-}
-
-//좋아요 delete
-export const deleteGoodData = async (goodProperNum) => {
-    const response = await userServer.delete(`/good/${goodProperNum}`);
-    return response.data;
-}
-
-//리뷰 가져오기
-export const getReviewDataList = async (shelterProperNum) => {
-    const response = await userServer.get(`/review/${shelterProperNum}`);
-    return response.data;
-}
-
-//리뷰 쓰기
-export const postReviewData = async (newReviewContent, shelterProperNum) => {
-    const response = await userServer.post('/review', {
-        reviewContent : newReviewContent,
-        shelterProperNum : shelterProperNum
-    });
     return response.data;
 }

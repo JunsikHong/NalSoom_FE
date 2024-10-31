@@ -12,5 +12,10 @@ export const getSpecialReportData = async (locationCode, currentDate) => {
             toTmFc: currentDate
         }
     });
+
+    const key = Object.keys(response.data.response);
+    if(key.includes('headers')) return;
+    if(response.data.response.header.resultCode !== '00') return;
+
     return response.data;
 }

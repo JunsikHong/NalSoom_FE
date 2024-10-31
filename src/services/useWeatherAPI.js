@@ -14,6 +14,9 @@ export const getWeatherData = async (latitude, longitude, currentDate, currentTi
         }
     });
 
+    const key = Object.keys(result.data.response);
+    if(key.includes('headers')) return;
+
     var weatherData = [...result.data.response.body.items.item];
     let tempWeatherInfo = [
         { fcstTime: null, LGT: null, PTY: null, RN1: null, SKY: null, T1H: null, REH: null, UUU: null, VVV: null, VEC: null, WSD: null },
