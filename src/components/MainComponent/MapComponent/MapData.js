@@ -29,8 +29,8 @@ export default function MapData() {
             //map bound 안에 있는 정보 -> Add Marker
             const filteredData = filteringData();
             if(filteredData.length !== 0) {
-                addMarker(filteredData);
-                setMapShelters(filteredData);
+                addMarker(filteredData.slice(0, 100));
+                setMapShelters(filteredData.slice(0, 100));
             }
         }
     }, [sheltersData.data, bound]);
@@ -85,38 +85,48 @@ export default function MapData() {
         var imageSize = new kakao.maps.Size(24, 35); //marker size
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); //marker object
         var centerPosition = kakaoMap.getCenter(longitude, latitude);
-        var markerPosition = null;
-        var poly = new kakao.maps.Polyline({
+        
+        var markerPosition = null; //marker position
+        var poly = new kakao.maps.Polyline({ //length object
             map : kakaoMap,
             strokeWeight : 0
         });
-        var length = 0;
+        var length = 0; //length
+        
+        var clusterer = new kakao.maps.MarkerClusterer({ //marker clusterer
+            map: kakaoMap,
+            averageCenter: true,  
+            minLevel: 7 
+        });
 
-        for (var i = 0; i < filteredData.length; i++) {
-            
+        var markers = filteredData.map(data => {
             //marker에 필요한 정보 셋팅
             var marker = new kakao.maps.Marker({
                 map: kakaoMap,
-                position: new kakao.maps.LatLng(filteredData[i].LA, filteredData[i].LO),
-                image: markerImage,
+                position: new kakao.maps.LatLng(data.LA, data.LO),
+                image: markerImage
             });
 
             //infoWindow에 필요한 정보 셋팅
             var infowindow = new kakao.maps.InfoWindow({
-                content: `<div>${filteredData[i].R_AREA_NM}</div>`
+                content: `<div>${data.R_AREA_NM}</div>`
             });
 
             //클릭 시에 currentShelter 셋팅 + mouse over & out 시 infowWindow 표시 및 가림
-            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(filteredData[i]));
+            kakao.maps.event.addListener(marker, 'click', setShelterDetailInfo(data));
             kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(kakaoMap, marker, infowindow));
             kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 
-            //거리 구하기
+            //center <-> position 거리 구하기
             markerPosition = marker.getPosition();
             poly.setPath([centerPosition, markerPosition]);
             length = poly.getLength();
-            filteredData[i].length = Math.round(length);
-        }
+            data.length = Math.round(length);
+
+        });
+
+        //add clusterer
+        clusterer.addMarkers(markers);
     }
 
     //WTM좌표 WGS84좌표로 변환

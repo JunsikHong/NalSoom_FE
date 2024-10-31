@@ -9,6 +9,12 @@
     }
 }
 
+.shelter-detail-info-recent-review-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .shelter-detail-info-filter {
     display: flex;
     justify-content: space-between;
@@ -44,6 +50,8 @@
     gap: 15px;
 }
 
+.shelter-time-condition-sort-direction,
+.shelter-size-condition,
 .shelter-time-condition,
 .shelter-type-condition {
     padding: 8px 12px;
@@ -106,6 +114,27 @@
 
 .shelter-detail-info-foot {
     cursor: pointer;
+}
+
+.shelter-detail-info-recent-review-update-confirm,
+.shelter-detail-info-recent-review-update {
+    margin-right: 13px;
+    color: #777;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.shelter-detail-info-recent-review-update-cancel,
+.shelter-detail-info-recent-review-delete {
+    color: #777;
+    font-size: 13px;
+    cursor: pointer;
+    margin-right: 13px;
+}
+
+.shelter-detail-info-recent-review-time {
+    margin-right: 13px;
+    color: #777;
 }
 .shelter-detail-info-review-firstline-btn-wrap{
     display: flex;
@@ -175,6 +204,16 @@
 .new-review-box {
     width: 100%;
     padding: 7px 12px 7px 12px; 
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.8em;
+    box-sizing: border-box;
+    margin-right: 10px;
+}
+
+.update-review-box {
+    width: 100%;
+    padding: 7px 12px 7px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 0.8em;
@@ -255,24 +294,20 @@
     flex-direction: row;
 }
 
+.shunt-place-detail-info,
 .heating-centre-detail-info {
     display: flex;
     flex-direction: column;
     align-items: start;
 }
 
+.shunt-place-detail-info-address,
 .heating-centre-detail-info-address {
     margin: 5px 0px;
     font-weight: bold;
     font-size: 14px;
 }
 
-.heating-centre-detail-info-option {
-    margin: 5px 0px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 
 .heating-centre-detail-info-option div {
     border: none;
@@ -284,6 +319,9 @@
     margin-right: 5px;
 }
 
+.shunt-place-detail-info-operating,
+.heating-centre-detail-info-operating,
+.shunt-place-detail-info-count,
 .heating-centre-detail-info-count {
     margin: 5px 0px;
     margin: 5px 0px;
@@ -292,12 +330,18 @@
     flex-wrap: wrap;
 }
 
+.shunt-place-detail-info-operating div,
+.heating-centre-detail-info-operating div,
+.shunt-place-detail-info-count div,
 .heating-centre-detail-info-count div {
     display: inline;
     font-size: 12px;
     font-weight: bold;
 }
 
+.shunt-place-detail-info-operating div span,
+.heating-centre-detail-info-operating div span,
+.shunt-place-detail-info-count div span,
 .heating-centre-detail-info-count div span {
     color: red;
 }
