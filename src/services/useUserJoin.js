@@ -21,11 +21,13 @@ export const checkEmail = async (joinEmailAuthValue) => {
     return response.data;
 }
 
-export const putUserAuthData = async (joinIdValue, joinPwValue, joinEmailValue, joinEmailTailValue) => {
+export const putUserAuthData = async (joinIdValue, joinPwValue, joinNameValue, joinEmailValue, joinEmailTailValue, joinAddressValue) => {
     const response = await userServer.post('/user/join', {
         userId: joinIdValue,
         userPw: joinPwValue,
-        userEmail: joinEmailValue + '@' + joinEmailTailValue
+        userName: joinNameValue,
+        userEmail: joinEmailValue + '@' + joinEmailTailValue,
+        userAddress : joinAddressValue
     });
     return response.data;
 }

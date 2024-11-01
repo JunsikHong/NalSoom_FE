@@ -32,6 +32,19 @@
   align-items: center;
 }
 
+.join-input-name-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.join-input-address-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
 .join-id {
   width: 250px;
 }
@@ -46,6 +59,14 @@
 
 .join-email {
   width: 125px;
+}
+
+.join-name {
+  width: 350px;
+}
+
+.join-address {
+  width: 350px;
 }
 
 .join-input-auth-wrap {
@@ -110,7 +131,8 @@
 
 .join-input-box .join-id-message,
 .join-input-box .join-pw-message,
-.join-input-box .join-email-message {
+.join-input-box .join-email-message,
+.join-input-box .join-name-message {
   font-size: 14px;
   color: #d9534f;
 }

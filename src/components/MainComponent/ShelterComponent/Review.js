@@ -29,9 +29,12 @@ export default function Review({ shelterItem }) {
     const pointUpdateReview = useRef([]); //review update click
     
     const [ deleteReviewProperNum, setDeleteReviewProperNum ] = useState(); //삭제 할 리뷰 번호
-
+    
     const [ complaintReviewContent, setComplaintReviewContent ] = useState(''); //신고 할 리뷰 내용
     const pointComplaintReview = useRef([]); //review complaint click
+    
+    const selectedReview = useRef([]); //selected review
+    const overlayRef = useRef(); //overlay
 
     //새로운 리뷰 데이터 생성 후에 -> 리뷰 데이터 새로 불러오기
     useEffect(() => {
@@ -44,6 +47,7 @@ export default function Review({ shelterItem }) {
     //리뷰 수정 완료 후에 -> 리뷰 데이터 새로 불러오기
     useEffect(() => {
         if (modifiedReviewData.isSuccess) {
+            clickReviewUpdateCancel(updateReviewProperNum);
             reviewDataList.refetch();
             window.alert('리뷰 수정이 완료되었습니다!');
         }
@@ -56,6 +60,15 @@ export default function Review({ shelterItem }) {
             window.alert('리뷰 삭제가 완료되었습니다!');
         }
     }, [deletedReviewData.data]);
+
+    //리뷰 신고 후에 -> 리뷰 데이터 새로 불러오기
+    useEffect(() => {
+        if(complaintReviewData.isSuccess) {
+            clickReviewComplaintCancel(complaintReviewProperNum);
+            reviewDataList.refetch();
+            window.alert('소중한 의견 감사합니다!');
+        }
+    }, [complaintReviewData.data]);
 
     //리뷰 데이터 새로 불러온 후에 -> 최근 리뷰 데이터 재설정
     useEffect(() => {
@@ -101,19 +114,21 @@ export default function Review({ shelterItem }) {
 
     //내가 쓴 리뷰 수정 update
     function clickReviewUpdate(reviewProperNum) {
-        const element = pointUpdateReview.current[reviewProperNum];
-        if(element) {
-            const updateElement = element.current.parentElement.nextElementSibling;
-            console.log(updateElement);
-            if (updateElement.style.display === 'none') {
-                updateElement.style.display = 'block';
-                setUpdateReviewProperNum(reviewProperNum);
-            }
+        if(localStorage.getItem('accessToken') === null && localStorage.getItem('accessToken') === '') {
+            window.confirm('로그인 이후에 리뷰 수정이 가능합니다.') && navigate('/login');
+            return;
+        }
+        console.log(pointComplaintReview.current[reviewProperNum]);
+        if (pointUpdateReview.current[reviewProperNum].style.display === 'none') {
+            selectedReview.current[reviewProperNum].style.display = 'none'
+            pointUpdateReview.current[reviewProperNum].style.display = 'block';
+            overlayRef.current.style.display = 'block'; // 오버레이 열기
+            setUpdateReviewProperNum(reviewProperNum);
         }
     }
     
     //내가 쓴 리뷰 수정 확인 update
-    function clickReviewUpdateConfirm(reviewProperNum) {
+    function clickReviewUpdateConfirm() {
         if(!updateReviewProperNum) {
             window.alert('일시적 오류입니다. 새로고침 후 다시 시도해주세요!');
             return;
@@ -124,19 +139,16 @@ export default function Review({ shelterItem }) {
         }
 
         modifiedReviewData.refetch();
-        clickReviewUpdateCancel(reviewProperNum);
     }
 
     //내가 쓴 리뷰 수정 취소 update
     function clickReviewUpdateCancel(reviewProperNum) {
-        const element = pointUpdateReview.current[reviewProperNum];
-        if(element) {
-            const updateElement = element.current.parentElement.nextElementSibling;
-            if (updateElement.style.display === 'block') {
-                updateElement.style.display = 'none';
-                setUpdateReviewProperNum();
-                setUpdateReviewContent('');
-            }
+        if (pointUpdateReview.current[reviewProperNum].style.display === 'block') {
+            selectedReview.current[reviewProperNum].style.display = 'flex'
+            pointUpdateReview.current[reviewProperNum].style.display = 'none';
+            overlayRef.current.style.display = 'none'; // 오버레이 닫기
+            setUpdateReviewProperNum();
+            setUpdateReviewContent('');
         }
     }
 
@@ -159,18 +171,16 @@ export default function Review({ shelterItem }) {
             return;
         }
 
-        const element = pointComplaintReview.current[reviewProperNum];
-        if(element) {
-            const complaintElement = element.current.parentElement.nextElementSibling.nextElementSibling;
-            if (complaintElement.style.display === 'none') {
-                complaintElement.style.display = 'block';
-                setComplaintReviewProperNum(reviewProperNum);
-            }
+        if (pointComplaintReview.current[reviewProperNum].style.display === 'none') {
+            selectedReview.current[reviewProperNum].style.display = 'none'
+            pointComplaintReview.current[reviewProperNum].style.display = 'block';
+            overlayRef.current.style.display = 'block'; // 오버레이 열기
+            setComplaintReviewProperNum(reviewProperNum);
         }
     }
 
     //리뷰 신고 확인
-    function clickReviewComplaintConfirm(reviewProperNum) {
+    function clickReviewComplaintConfirm() {
         if(!complaintReviewProperNum) {
             window.alert('일시적 오류입니다. 새로고침 후 다시 시도해주세요!');
             return;
@@ -181,19 +191,16 @@ export default function Review({ shelterItem }) {
         }
 
         complaintReviewData.refetch();
-        clickReviewComplaintCancel(reviewProperNum)
     }
 
     //리뷰 신고 취소
     function clickReviewComplaintCancel(reviewProperNum) {
-        const element = pointComplaintReview.current[reviewProperNum];
-        if(element) {
-            const complaintElement = element.current.parentElement.nextElementSibling.nextElementSibling;
-            if (complaintElement.style.display === 'block') {
-                complaintElement.style.display = 'none';
-                setComplaintReviewProperNum();
-                setComplaintReviewContent('');
-            }
+        if (pointComplaintReview.current[reviewProperNum].style.display === 'block') {
+            selectedReview.current[reviewProperNum].style.display = 'flex'
+            pointComplaintReview.current[reviewProperNum].style.display = 'none';
+            overlayRef.current.style.display = 'none'; // 오버레이 닫기
+            setComplaintReviewProperNum();
+            setComplaintReviewContent('');
         }
     }
 
@@ -240,31 +247,31 @@ export default function Review({ shelterItem }) {
                         
                         {/* 리뷰 내용 수정 삭제 신고 */}
                         <p className='shelter-detail-info-recent-review'>{recentReview.reviewContent}</p> 
-                        <div className='shelter-detail-info-recent-review-right'>
+                        <div className='shelter-detail-info-recent-review-right' ref={element => selectedReview.current[recentReview.reviewProperNum] = element}>
                             <p className='shelter-detail-info-recent-review-time'>{reviewTimeFormat(recentReview.reviewWriteTime)}</p>
                             {recentReview.myReview &&
                                 <>
-                                    <p className='shelter-detail-info-recent-review-update' ref={element => pointUpdateReview.current[recentReview.reviewProperNum] = element} onClick={() => clickReviewUpdate(recentReview.reviewProperNum)}><FaPen/></p>
+                                    <p className='shelter-detail-info-recent-review-update' onClick={() => clickReviewUpdate(recentReview.reviewProperNum)}><FaPen/></p>
                                     <p className='shelter-detail-info-recent-review-delete' onClick={() => clickReviewDelete(recentReview.reviewProperNum)}><FaTrash /></p>
                                 </>
                             }
-                            <p className='shelter-detail-info-recent-review-complaint' ref={element => pointComplaintReview.current[recentReview.reviewProperNum] = element} onClick={() => clickReviewComplaint(recentReview.reviewProperNum)}>신고</p>
+                            <p className='shelter-detail-info-recent-review-complaint' onClick={() => clickReviewComplaint(recentReview.reviewProperNum)}>신고</p>
                         </div>
 
                         {/* 리뷰 수정 */}
-                        <div style={{display : 'none'}}>
-                            <div>
-                                <input type='text' className='update-review-box' placeholder='리뷰 수정 중...' value={updateReviewContent} onChange={(e) => setUpdateReviewContent(e.target.value)}></input>
-                                <p className='shelter-detail-info-recent-review-update-confirm' onClick={() => clickReviewUpdateConfirm(recentReview.reviewProperNum)}><FaCheck/></p>
+                        <div style={{display : 'none'}} ref={element => pointUpdateReview.current[recentReview.reviewProperNum] = element}>
+                            <div className='update-review-wrap'>
+                                <textarea className='update-review-box' value={recentReview.reviewContent} onChange={(e) => setUpdateReviewContent(e.target.value)}></textarea>
+                                <p className='shelter-detail-info-recent-review-update-confirm' onClick={clickReviewUpdateConfirm}><FaCheck/></p>
                                 <p className='shelter-detail-info-recent-review-update-cancel' onClick={() => clickReviewUpdateCancel(recentReview.reviewProperNum)}><FaTimes/></p>
                             </div>
                         </div>
 
                         {/* 리뷰 신고 */}
-                        <div style={{display : 'none'}}>
-                            <div>
-                                <input type='text' className='review-complaint-box' placeholder='신고 내용을 입력해 주세요' value={complaintReviewContent} onChange={(e) => setComplaintReviewContent(e.target.value)}></input>
-                                <p className='shelter-detail-info-review-complaint-confirm' onClick={() => clickReviewComplaintConfirm(recentReview.reviewProperNum)}>신고하기</p>
+                        <div style={{display : 'none'}} ref={element => pointComplaintReview.current[recentReview.reviewProperNum] = element}>
+                            <div className='complaint-review-wrap'>
+                                <textarea className='update-review-box' placeholder='신고 내용을 입력해 주세요' value={complaintReviewContent} onChange={(e) => setComplaintReviewContent(e.target.value)}></textarea>
+                                <p className='shelter-detail-info-review-complaint-confirm' onClick={clickReviewComplaintConfirm}>신고하기</p>
                                 <p className='shelter-detail-info-review-complaint-cancel' onClick={() => clickReviewComplaintCancel(recentReview.reviewProperNum)}>취소</p>
                             </div>
                         </div>
@@ -275,10 +282,13 @@ export default function Review({ shelterItem }) {
 
             {/* 새로운 리뷰 작성 */}
             <div className='shelter-detail-info-review-wrap'>
-                <input type='text' className='new-review-box' placeholder='리뷰를 남겨주세요 (욕설이나 비방의 목적으로 작성한 글은 삭제조치 됩니다)' value={newReviewContent} onChange={(e) => setNewReviewContent(e.target.value)}></input>
+                <input type='text' className='new-review-box' placeholder='리뷰를 남겨주세요' value={newReviewContent} onChange={(e) => setNewReviewContent(e.target.value)}></input>
                 <button className='new-review-btn' onClick={clickNewReview}>↩︎</button>
             </div>
 
+            { /* 오버레이 */}
+            <div className="overlay" style={{ display: 'none' }} ref={overlayRef} />
+            
         </>
     );
 }
