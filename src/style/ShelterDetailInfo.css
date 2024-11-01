@@ -346,10 +346,6 @@
     color: red;
 }
 
-.shunt-place-detail-info {
-
-}
-
 .shelter-detail-info-recent-review-wrap {
     display: flex;
     flex-direction: column;
@@ -365,4 +361,85 @@
     margin-bottom: 13px;
     font-size: 12px;
     font-weight: bold;
+    flex-wrap: wrap;
+}
+
+.update-review-wrap, .complaint-review-wrap {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+    width: 400px; /* 원하는 너비 */
+}
+
+.update-review-box,
+.complaint-review-box {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.shelter-detail-info-recent-review-update-confirm,
+.shelter-detail-info-review-complaint-confirm,
+.shelter-detail-info-recent-review-update-cancel,
+.shelter-detail-info-review-complaint-cancel {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.shelter-detail-info-recent-review-update-confirm {
+    background-color: #4CAF50; /* 확인 버튼 색상 */
+    color: white;
+}
+
+.shelter-detail-info-review-complaint-confirm {
+    background-color: #f44336; /* 신고하기 버튼 색상 */
+    color: white;
+}
+
+.shelter-detail-info-recent-review-update-confirm:hover,
+.shelter-detail-info-review-complaint-confirm:hover {
+    background-color: #45a049; /* 확인 버튼 호버 색상 */
+}
+
+.shelter-detail-info-recent-review-update-cancel,
+.shelter-detail-info-review-complaint-cancel {
+    background-color: #e0e0e0; /* 취소 버튼 색상 */
+}
+
+.shelter-detail-info-recent-review-update-cancel:hover,
+.shelter-detail-info-review-complaint-cancel:hover {
+    background-color: #d5d5d5; /* 취소 버튼 호버 색상 */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정색 */
+    z-index: 999; /* 모달보다 낮은 z-index */
+    justify-content: center;
+    align-items: center;
+}
+
+.shelter-detail-info-recent-review-complaint {
+    cursor: pointer;
+    font-weight: bold;
+    color: #b5b4b4;
 }
