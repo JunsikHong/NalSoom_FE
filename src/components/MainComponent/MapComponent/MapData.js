@@ -30,7 +30,7 @@ export default function MapData() {
             const filteredData = filteringData();
             if(filteredData.length !== 0) {
                 addMarker(filteredData.slice(0, 100));
-                setMapShelters(filteredData.slice(0, 100));
+                setMapShelters(filteredData.slice(0, 30));
             }
         }
     }, [sheltersData.data, bound]);
@@ -93,11 +93,6 @@ export default function MapData() {
         });
         var length = 0; //length
         
-        var clusterer = new kakao.maps.MarkerClusterer({ //marker clusterer
-            map: kakaoMap,
-            averageCenter: true,  
-            minLevel: 7 
-        });
 
         var markers = filteredData.map(data => {
             //marker에 필요한 정보 셋팅
@@ -124,9 +119,6 @@ export default function MapData() {
             data.length = Math.round(length);
 
         });
-
-        //add clusterer
-        clusterer.addMarkers(markers);
     }
 
     //WTM좌표 WGS84좌표로 변환

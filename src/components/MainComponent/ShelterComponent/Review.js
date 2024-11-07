@@ -1,7 +1,7 @@
 //css
 import '@Style/ShelterDetailInfo.css'
 
-import { getReviewDataList, postReviewData,postComplaintReviewData, updateReviewData, deleteReviewData } from '@Services/useReview';
+import { getReviewDataList, postReviewData, postComplaintReviewData, updateReviewData, deleteReviewData } from '@Services/useReview';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from "react";
@@ -10,31 +10,33 @@ import { FaPen, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
 export default function Review({ shelterItem }) {
 
     const navigate = useNavigate();
-    const [ complaintReviewProperNum, setComplaintReviewProperNum ] = useState(0); //신고 할 리뷰 번호
-
-    const reviewDataList = useQuery({ queryKey : ['reviewDataList', shelterItem.shelterProperNum], queryFn : () => { return getReviewDataList(shelterItem.shelterProperNum) }, enabled : false}); //리뷰 10개 가져오기
-    const newReviewData = useQuery({ queryKey : ['newReviewData', shelterItem.shelterProperNum], queryFn : () => { return postReviewData(newReviewContent, shelterItem.shelterProperNum) }, enabled : false}); //리뷰 쓰기
-    const modifiedReviewData = useQuery({ queryKey : ['updateReviewData', shelterItem.shelterProperNum], queryFn : () => { return updateReviewData(updateReviewProperNum, updateReviewContent) }, enabled : false}); //리뷰 수정
-    const deletedReviewData = useQuery({ queryKey : ['deleteReviewData', shelterItem.shelterProperNum], queryFn : () => { return deleteReviewData(deleteReviewProperNum) }, enabled : false}); //리뷰 삭제
-
-    const complaintReviewData = useQuery({ queryKey : ['complaintReviewData', complaintReviewProperNum], queryFn : () => { return postComplaintReviewData(complaintReviewProperNum, complaintReviewContent) }, enabled : false }); //리뷰 신고
-
     const [ viewRecentReview, setViewRecentReview] = useState(false); //리뷰 보이기
-    const [ recentReviewData, setRecentReviewData ] = useState([]); //리뷰 최신순 10개
+    const [ reviewPaging, setReviewPaging ] = useState(0);
+    const [ reviewPagingSize, setReviewPagingSize ] = useState(10);
+    const [ recentReviewData, setRecentReviewData ] = useState([]); //리뷰 리스트
     
     const [ newReviewContent, setNewReviewContent] = useState(''); //새로운 리뷰 내용
     
-    const [ updateReviewProperNum, setUpdateReviewProperNum ] = useState(); //수정 할 리뷰 번호
+    const updateReviewProperNum = useRef(); //수정 할 리뷰 번호
     const [ updateReviewContent, setUpdateReviewContent ] = useState(''); //수정 할 리뷰 내용
     const pointUpdateReview = useRef([]); //review update click
     
-    const [ deleteReviewProperNum, setDeleteReviewProperNum ] = useState(); //삭제 할 리뷰 번호
+    const deleteReviewProperNum = useRef(); //삭제 할 리뷰 번호
     
+    const complaintReviewProperNum = useRef(0);//신고 할 리뷰 번호
     const [ complaintReviewContent, setComplaintReviewContent ] = useState(''); //신고 할 리뷰 내용
     const pointComplaintReview = useRef([]); //review complaint click
     
+    const selectedReviewList = useRef();
     const selectedReview = useRef([]); //selected review
     const overlayRef = useRef(); //overlay
+
+    const reviewDataList = useQuery({ queryKey : ['reviewDataList', shelterItem.shelterProperNum], queryFn : () => { return getReviewDataList(shelterItem.shelterProperNum, reviewPaging, reviewPagingSize) }, enabled : false}); //리뷰 10개 가져오기
+    const newReviewData = useQuery({ queryKey : ['newReviewData', shelterItem.shelterProperNum], queryFn : () => { return postReviewData(newReviewContent, shelterItem.shelterProperNum) }, enabled : false}); //리뷰 쓰기
+    const modifiedReviewData = useQuery({ queryKey : ['updateReviewData', shelterItem.shelterProperNum], queryFn : () => { return updateReviewData(shelterItem.shelterProperNum, updateReviewProperNum.current, updateReviewContent) }, enabled : false}); //리뷰 수정
+    const deletedReviewData = useQuery({ queryKey : ['deleteReviewData', shelterItem.shelterProperNum], queryFn : () => { return deleteReviewData(deleteReviewProperNum.current) }, enabled : false}); //리뷰 삭제
+    const complaintReviewData = useQuery({ queryKey : ['complaintReviewData', complaintReviewProperNum.current], queryFn : () => { return postComplaintReviewData(complaintReviewProperNum.current, complaintReviewContent) }, enabled : false }); //리뷰 신고
+
 
     //새로운 리뷰 데이터 생성 후에 -> 리뷰 데이터 새로 불러오기
     useEffect(() => {
@@ -47,7 +49,7 @@ export default function Review({ shelterItem }) {
     //리뷰 수정 완료 후에 -> 리뷰 데이터 새로 불러오기
     useEffect(() => {
         if (modifiedReviewData.isSuccess) {
-            clickReviewUpdateCancel(updateReviewProperNum);
+            clickReviewUpdateCancel(updateReviewProperNum.current);
             reviewDataList.refetch();
             window.alert('리뷰 수정이 완료되었습니다!');
         }
@@ -59,12 +61,12 @@ export default function Review({ shelterItem }) {
             reviewDataList.refetch();
             window.alert('리뷰 삭제가 완료되었습니다!');
         }
-    }, [deletedReviewData.data]);
+    }, [deletedReviewData.dataUpdatedAt]);
 
     //리뷰 신고 후에 -> 리뷰 데이터 새로 불러오기
     useEffect(() => {
         if(complaintReviewData.isSuccess) {
-            clickReviewComplaintCancel(complaintReviewProperNum);
+            clickReviewComplaintCancel(complaintReviewProperNum.current);
             reviewDataList.refetch();
             window.alert('소중한 의견 감사합니다!');
         }
@@ -79,6 +81,12 @@ export default function Review({ shelterItem }) {
 
     //최근 리뷰 불러오기 select
     function clickRecentReview() {
+        if(selectedReviewList.current.style.display === 'none') {
+            selectedReviewList.current.style.display = 'block';
+        } else {
+            selectedReviewList.current.style.display = 'none';
+        }
+
         if(!viewRecentReview) {
             reviewDataList.refetch();
             setViewRecentReview(true);
@@ -113,20 +121,20 @@ export default function Review({ shelterItem }) {
     }
 
     //내가 쓴 리뷰 수정 update
-    function clickReviewUpdate(reviewProperNum) {
+    function clickReviewUpdate(reviewProperNum, reviewContent) {
         if(localStorage.getItem('accessToken') === null && localStorage.getItem('accessToken') === '') {
             window.confirm('로그인 이후에 리뷰 수정이 가능합니다.') && navigate('/login');
             return;
         }
-        console.log(pointComplaintReview.current[reviewProperNum]);
         if (pointUpdateReview.current[reviewProperNum].style.display === 'none') {
             selectedReview.current[reviewProperNum].style.display = 'none'
             pointUpdateReview.current[reviewProperNum].style.display = 'block';
             overlayRef.current.style.display = 'block'; // 오버레이 열기
-            setUpdateReviewProperNum(reviewProperNum);
+            updateReviewProperNum.current = reviewProperNum;
+            setUpdateReviewContent(reviewContent);
         }
     }
-    
+
     //내가 쓴 리뷰 수정 확인 update
     function clickReviewUpdateConfirm() {
         if(!updateReviewProperNum) {
@@ -147,20 +155,25 @@ export default function Review({ shelterItem }) {
             selectedReview.current[reviewProperNum].style.display = 'flex'
             pointUpdateReview.current[reviewProperNum].style.display = 'none';
             overlayRef.current.style.display = 'none'; // 오버레이 닫기
-            setUpdateReviewProperNum();
+            updateReviewProperNum.current = null;
             setUpdateReviewContent('');
         }
     }
 
     //내가 쓴 리뷰 삭제 delete
     function clickReviewDelete(reviewProperNum) {
-        setDeleteReviewProperNum(reviewProperNum);
+        if(localStorage.getItem('accessToken') === null && localStorage.getItem('accessToken') === '') {
+            window.confirm('로그인 이후에 삭제 가능합니다.') && navigate('/login');
+            return;
+        }
+
+        deleteReviewProperNum.current = reviewProperNum;
         const deleteYn = window.confirm('리뷰를 삭제하시겠습니까?');
 
         if(deleteYn) {
             deletedReviewData.refetch();
         } else {
-            setDeleteReviewProperNum();
+            deleteReviewProperNum.current = null;
         }
     }
 
@@ -175,7 +188,7 @@ export default function Review({ shelterItem }) {
             selectedReview.current[reviewProperNum].style.display = 'none'
             pointComplaintReview.current[reviewProperNum].style.display = 'block';
             overlayRef.current.style.display = 'block'; // 오버레이 열기
-            setComplaintReviewProperNum(reviewProperNum);
+            complaintReviewProperNum.current = reviewProperNum;
         }
     }
 
@@ -199,8 +212,20 @@ export default function Review({ shelterItem }) {
             selectedReview.current[reviewProperNum].style.display = 'flex'
             pointComplaintReview.current[reviewProperNum].style.display = 'none';
             overlayRef.current.style.display = 'none'; // 오버레이 닫기
-            setComplaintReviewProperNum();
+            complaintReviewProperNum.current = reviewProperNum;
             setComplaintReviewContent('');
+        }
+    }
+
+    //리뷰 더보기
+    function clickMore() {
+        if(shelterItem.reviewCount > reviewPaging+reviewPagingSize) {
+            return;
+        }
+
+        if(viewRecentReview) {
+            setReviewPaging(reviewPaging+10);
+            reviewDataList.refetch();
         }
     }
 
@@ -241,7 +266,7 @@ export default function Review({ shelterItem }) {
                 </div>
             
             </div>
-            <ul className='shelter-detail-info-recent-review-wrap'>
+            <ul className='shelter-detail-info-recent-review-wrap' ref={selectedReviewList} style={{display : 'none'}}>
                 {recentReviewData.length !== 0 && viewRecentReview && recentReviewData.map(recentReview =>
                     <li className='shelter-detail-info-recent-review-list' key={recentReview.reviewProperNum}>
                         
@@ -249,19 +274,15 @@ export default function Review({ shelterItem }) {
                         <p className='shelter-detail-info-recent-review'>{recentReview.reviewContent}</p> 
                         <div className='shelter-detail-info-recent-review-right' ref={element => selectedReview.current[recentReview.reviewProperNum] = element}>
                             <p className='shelter-detail-info-recent-review-time'>{reviewTimeFormat(recentReview.reviewWriteTime)}</p>
-                            {recentReview.myReview &&
-                                <>
-                                    <p className='shelter-detail-info-recent-review-update' onClick={() => clickReviewUpdate(recentReview.reviewProperNum)}><FaPen/></p>
-                                    <p className='shelter-detail-info-recent-review-delete' onClick={() => clickReviewDelete(recentReview.reviewProperNum)}><FaTrash /></p>
-                                </>
-                            }
+                            <p className='shelter-detail-info-recent-review-update' onClick={() => clickReviewUpdate(recentReview.reviewProperNum, recentReview.reviewContent)}><FaPen /></p>
+                            <p className='shelter-detail-info-recent-review-delete' onClick={() => clickReviewDelete(recentReview.reviewProperNum)}><FaTrash /></p>                            
                             <p className='shelter-detail-info-recent-review-complaint' onClick={() => clickReviewComplaint(recentReview.reviewProperNum)}>신고</p>
                         </div>
 
                         {/* 리뷰 수정 */}
                         <div style={{display : 'none'}} ref={element => pointUpdateReview.current[recentReview.reviewProperNum] = element}>
                             <div className='update-review-wrap'>
-                                <textarea className='update-review-box' value={recentReview.reviewContent} onChange={(e) => setUpdateReviewContent(e.target.value)}></textarea>
+                                <textarea className='update-review-box' defaultValue={recentReview.reviewContent} onChange={(e) => setUpdateReviewContent(e.target.value)}></textarea>
                                 <p className='shelter-detail-info-recent-review-update-confirm' onClick={clickReviewUpdateConfirm}><FaCheck/></p>
                                 <p className='shelter-detail-info-recent-review-update-cancel' onClick={() => clickReviewUpdateCancel(recentReview.reviewProperNum)}><FaTimes/></p>
                             </div>
@@ -270,7 +291,7 @@ export default function Review({ shelterItem }) {
                         {/* 리뷰 신고 */}
                         <div style={{display : 'none'}} ref={element => pointComplaintReview.current[recentReview.reviewProperNum] = element}>
                             <div className='complaint-review-wrap'>
-                                <textarea className='update-review-box' placeholder='신고 내용을 입력해 주세요' value={complaintReviewContent} onChange={(e) => setComplaintReviewContent(e.target.value)}></textarea>
+                                <textarea className='update-review-box' placeholder='신고 내용을 입력해 주세요' onChange={(e) => setComplaintReviewContent(e.target.value)}></textarea>
                                 <p className='shelter-detail-info-review-complaint-confirm' onClick={clickReviewComplaintConfirm}>신고하기</p>
                                 <p className='shelter-detail-info-review-complaint-cancel' onClick={() => clickReviewComplaintCancel(recentReview.reviewProperNum)}>취소</p>
                             </div>
@@ -278,6 +299,12 @@ export default function Review({ shelterItem }) {
 
                     </li>)
                 }
+                
+                {/* 더보기 */}
+                <div className='shelter-detail-info-review-more-wrap' onClick={clickMore}>
+                    <p className='shelter-detail-info-review-more'>{shelterItem.reviewCount > reviewPaging+reviewPagingSize ? '더보기' : ''}</p>
+                </div>
+
             </ul>
 
             {/* 새로운 리뷰 작성 */}
