@@ -2,15 +2,15 @@
     "compilerOptions": {
       "baseUrl": ".",
       "paths": {
-          "@HeadComponent/*": ["src/components/HeadComponent/*"],
-          "@FootComponent/*": ["src/components/FootComponent/*"],
-          "@LoginComponent/*": ["src/components/LoginComponent/*"],
-          "@MainComponent/*": ["src/components/MainComponent/*"],
-          "@MapComponent/*": ["src/components/MainComponent/MapComponent/*"],
-          "@ShelterComponent/*": ["src/components/MainComponent/ShelterComponent/*"],
-          "@Pages/*": ["src/pages/*"],
+          "@HeadComponent/*": ["./src/components/HeadComponent/*"],
+          "@FootComponent/*": ["./src/components/FootComponent/*"],
+          "@LoginComponent/*": ["./src/components/LoginComponent/*"],
+          "@MainComponent/*": ["./src/components/MainComponent/*"],
+          "@MapComponent/*": ["./src/components/MainComponent/MapComponent/*"],
+          "@ShelterComponent/*": ["./src/components/MainComponent/ShelterComponent/*"],
+          "@Pages/*": ["./src/pages/*"],
           "@Style/*": ["./src/style/*"], 
-          "@Store/*": ["src/store/*"],
+          "@Store/*": ["./src/store/*"],
           "@Images/*": ["./src/images"],
           "@Services/*": ["./src/services"],
           "@/*": ["./src/*"]
