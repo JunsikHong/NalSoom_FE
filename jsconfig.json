@@ -9,11 +9,11 @@
           "@MapComponent/*": ["src/components/MainComponent/MapComponent/*"],
           "@ShelterComponent/*": ["src/components/MainComponent/ShelterComponent/*"],
           "@Pages/*": ["src/pages/*"],
-          "@Style/*": ["./src/style/*"], 
+          "@Style/*": ["src/style/*"], 
           "@Store/*": ["src/store/*"],
-          "@Images/*": ["./src/images"],
-          "@Services/*": ["./src/services"],
-          "@/*": ["./src/*"]
+          "@Images/*": ["src/images"],
+          "@Services/*": ["src/services"],
+          "@/*": ["src/*"]
       }
     },
     "include": ["src/**/*"]
