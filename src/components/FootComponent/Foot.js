@@ -15,9 +15,8 @@ export default function Foot() {
                 </div>
                 <div className="footer-section contact">
                     <h3>Contact Us</h3>
-                    <p>Email: support@weathershelter.com</p>
-                    <p>Phone: +1-800-123-4567</p>
-                    <p>Address: 123 Weather Lane, Safe City, USA</p>
+                    <p>Email: nalsoom@nalsoom.com</p>
+                    <p>Phone: 000=0000=0000</p>
                 </div>
             </div>
             <div className="footer-bottom">

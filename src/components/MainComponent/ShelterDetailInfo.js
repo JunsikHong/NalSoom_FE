@@ -18,16 +18,16 @@ export default function ShelterDetailInfo() {
     const [ matchedData, setMatchedData ] = useState([]); //matched 데이터
 
     const [ searchTerm, setSearchTerm ] = useState(''); //검색어
+    const searchShelter = useRef([]); //검색어로 검색한 대피소
     const [ searchShelterType, setSearchShelterType ] = useState('normal'); //타입 검색
     const [ searchSortBy, setSearchSortBy ] = useState('good'); //정렬 검색
-    const [ searchSortDirection, setSearchSortDirection ] = useState('desc'); //정렬 검색
     const [ searchPaging, setSearchPaging ] = useState(0) //페이징 검색
     const [ searchSize, setSearchSize ] = useState(10) //페이징 사이즈
 
     const pointDetail = useRef([]); //detail click
 
     const sheltersData = useQuery({ queryKey : ['sheltersData'] });    
-    const boardData = useQuery({ queryKey: ['boardData'], queryFn: () => { return getBoardData(mapShelters, searchShelterType, searchSortBy, searchSortDirection, searchPaging, searchSize) }, enabled : false }); //게시판 데이터
+    const boardData = useQuery({ queryKey: ['boardData'], queryFn: () => { return getBoardData(searchShelter.current, searchShelterType, searchSortBy, searchPaging, searchSize) }, enabled : false }); //게시판 데이터
     const goodData = useQuery({ queryKey: ['goodData'], queryFn : getGoodData, enabled : false }); // 회원기능 : 본인 좋아요 여부 확인
 
     //shelterData Fetching 시점
@@ -54,10 +54,7 @@ export default function ShelterDetailInfo() {
 
             //api 정보 + 서버 정보
             matchShelterBoard(tempShelterData, tempBoardData, tempMatchedData);
-            //검색어 유효성 검사
-            if (searchTerm !== '' && searchTerm !== null && searchTerm.length < 20) {
-                matchSearchTerm(tempMatchedData);
-            }
+            
         }
         
         //goodData
@@ -103,11 +100,6 @@ export default function ShelterDetailInfo() {
         }
     }
 
-    // 검색어 필터링
-    function matchSearchTerm(tempMatchedData) {
-        tempMatchedData = tempMatchedData.filter(shelter => shelter.shelterName.includes(searchTerm));
-    }
-
     //검색
     function clickSearch () {
         //검색 조건
@@ -124,7 +116,7 @@ export default function ShelterDetailInfo() {
         }
 
         //대피소 타입 유효성 검사
-        if(!(searchShelterType === 'total' || searchShelterType === 'TbGtnHwcwP' || searchShelterType === 'TbGtnCwP' || searchShelterType === 'shuntPlace')) {
+        if(!(searchShelterType === 'normal' || searchShelterType === 'TbGtnHwcwP' || searchShelterType === 'TbGtnCwP' || searchShelterType === 'shuntPlace')) {
             window.alert('유효한 대피소 데이터가 아닙니다.');
             return;
         }
@@ -135,10 +127,29 @@ export default function ShelterDetailInfo() {
             return;
         }
 
+        //내 주변
         if(searchSortBy === 'distance' && (mapShelters.length === 0 || mapShelters[0] === undefined)) {
             window.alert('내 주변의 대피소 데이터가 없습니다.');
             return;
         }
+
+        var tempSearchShelter = [];
+        //내 주변 검색어 있을 때 mapShelters
+        if(searchSortBy === 'distance') {
+            if (searchTerm !== '' && searchTerm !== null) {
+                tempSearchShelter = mapShelters.filter(shelter => shelter.R_AREA_NM.includes(searchTerm));
+                searchShelter.current = tempSearchShelter;
+            }
+        //검색어만 있을 때 sheltersData
+        } else {
+            if (searchTerm !== '' && searchTerm !== null) {
+                window.alert('곧 서비스를 시작할게요!');
+                return;
+                tempSearchShelter = sheltersData.data.filter(shelter => shelter.R_AREA_NM.includes(searchTerm));
+                searchShelter.current = tempSearchShelter;
+            }
+        }
+        
 
         //board 데이터 정상적으로 불러왔을 때 검색 가능
         if(boardData.isSuccess) {
@@ -187,14 +198,9 @@ export default function ShelterDetailInfo() {
                     </li>
                     <li className='shelter-detail-info-search-condition'>
                         <select className='shelter-time-condition' value={searchSortBy} onChange={(e) => setSearchSortBy(e.target.value)}>
-                            <option value={'good'}>좋아요</option>
-                            <option value={'review'}>리뷰</option>
+                            <option value={'good'}>좋아요 많은순</option>
+                            <option value={'review'}>리뷰 많은순</option>
                             {/* <option value={'distance'}>가까운 순</option> */}
-                        </select>
-
-                        <select className='shelter-time-condition-sort-direction' value={searchSortDirection} onChange={(e) => setSearchSortDirection(e.target.value)}>
-                            <option value={'desc'}>많은순</option>
-                            <option value={'asc'}>적은순</option>
                         </select>
 
                         <select className='shelter-type-condition' value={searchShelterType} onChange={(e) => setSearchShelterType(e.target.value)}>
