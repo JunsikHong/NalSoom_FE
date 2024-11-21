@@ -3,7 +3,7 @@ const {createProxyMiddleware} = require('http-proxy-middleware');
 export default function (app) {
   app.use( '/api',
     createProxyMiddleware({
-      target: "http://localhost:8080",
+      target: "http://35.216.127.107",
       changeOrigin: true,
     })
   );
