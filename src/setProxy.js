@@ -17,7 +17,7 @@ export default function (app) {
 
   app.use(
     createProxyMiddleware({
-      target: 'https://openapi.seoul.go.kr:8088',
+      target: 'http://openapi.seoul.go.kr:8088',
       changeOrigin: true
     })
   )
