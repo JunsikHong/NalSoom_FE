@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-      "baseUrl": ".",
+      "baseUrl": "./",
       "paths": {
           "@HeadComponent/*": ["src/components/HeadComponent/*"],
           "@FootComponent/*": ["src/components/FootComponent/*"],
