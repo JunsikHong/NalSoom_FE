@@ -19,7 +19,7 @@ export default function (app) {
     createProxyMiddleware({
       target: 'http://openapi.seoul.go.kr:8088',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' }
+      pathRewrite: { "^/seoulapi" : "" }
     })
   )
 };
