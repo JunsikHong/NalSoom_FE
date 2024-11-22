@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //spring 서버 요청
 const userServer = axios.create({
-    baseURL: "http://35.216.127.107/api/v1",
+    baseURL: "https://35.216.127.107/api/v1",
     headers: {
         'Content-Type': 'application/json'
     }
@@ -33,7 +33,7 @@ const specialReportServer = axios.create({
 
 //서울 공공데이터 서버 요청
 const seoulDataServer = axios.create({
-    baseURL: 'http://openapi.seoul.go.kr:8088/seoulapi'
+    baseURL: 'https://openapi.seoul.go.kr:8088/seoulapi'
 });
 
 export {
