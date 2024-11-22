@@ -15,10 +15,11 @@ export default function (app) {
     })
   );
 
-  app.use(
+  app.use( '/seoulapi',
     createProxyMiddleware({
       target: 'http://openapi.seoul.go.kr:8088',
-      changeOrigin: true
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' }
     })
   )
 };
