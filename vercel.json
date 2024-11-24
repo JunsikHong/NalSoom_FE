@@ -3,7 +3,7 @@
     "rewrites": [
       {
         "source": "/seoulapi/:path*",
-        "destination": "http://openapi.seoul.go.kr:8088/:path*"
+        "destination": "/temp/api/request"
       }
     ]
   }
