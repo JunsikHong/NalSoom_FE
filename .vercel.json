@@ -1,6 +1,5 @@
 {
     "rewrites" : [
-        {"source" : "/api/:path*", "destination" : "http://35.216.127.107/api/:path*"},
         {"source" : "/seoulapi/:path*", "destination" : "http://openapi.seoul.go.kr:8088/:path*"}
     ]
 }
