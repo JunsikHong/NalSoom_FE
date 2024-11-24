@@ -1,9 +1,5 @@
-
-  {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/temp/api/request"
-      }
-    ]
+{
+    "version": 2,
+    "routes": [{ "src": "/api/(.*)", "dest": "http://example.com/$1" }]
   }
+  
