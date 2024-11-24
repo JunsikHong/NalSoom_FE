@@ -31,7 +31,7 @@ const specialReportServer = axios.create({
     baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
 });
 
-//서울 공공데이터 서버 요청
+//서울 공공데이터 서버 요청//
 const seoulDataServer = axios.create({
     baseURL: 'https://openapi.seoul.go.kr:8088'
 });
