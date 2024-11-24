@@ -1,7 +1,7 @@
 {
     "rewrites": [
       {
-        "source": "/openapi/:match*",
+        "source": "/api/:match*",
         "destination": "http://openapi.seoul.go.kr:8088/:match*"
       }
     ]
