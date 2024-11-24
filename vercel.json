@@ -2,7 +2,7 @@
   {
     "rewrites": [
       {
-        "source": "/seoulapi/:path*",
+        "source": "/(.*)",
         "destination": "/temp/api/request"
       }
     ]
