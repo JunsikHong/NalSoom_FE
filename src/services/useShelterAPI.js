@@ -14,7 +14,7 @@ export const getSheltersData = async () => {
     };
 
     for(var i = 0 ; i < shelterList.length; i++) {
-        const tempApiResult = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/' + shelterList[i] + '/1/1');
+        const tempApiResult = await seoulDataServer.get('/seoulapi/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/' + shelterList[i] + '/1/1');
         
         switch (shelterList[i]) {
             case 'TbGtnHwcwP' :
@@ -40,7 +40,7 @@ export const getSheltersData = async () => {
                 pageEndNum = shelterListEndNum[j];
             }
 
-            var apiResult = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/' + shelterList[j] + '/' + pageStartNum + '/' + pageEndNum);
+            var apiResult = await seoulDataServer.get('/seoulapi/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/' + shelterList[j] + '/' + pageStartNum + '/' + pageEndNum);
             
             switch (shelterList[j]) {
                 case 'TbGtnHwcwP' :

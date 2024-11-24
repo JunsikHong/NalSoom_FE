@@ -1,5 +1,5 @@
 {
     "version": 2,
-    "routes": [{ "src": "/api/(.*)", "dest": "http://example.com/$1" }]
+    "routes": [{ "src": "/seoulapi/(.*)", "dest": "http://example.com/$1" }]
   }
   
