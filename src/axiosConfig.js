@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //spring 서버 요청
 const userServer = axios.create({
-    baseURL: "http://35.216.127.107/api/v1",
+    baseURL: "/api/v1",
     headers: {
         'Content-Type': 'application/json'
     }
