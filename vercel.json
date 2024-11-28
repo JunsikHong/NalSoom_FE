@@ -1,8 +1,8 @@
   {
     "rewrites": [
       {
-        "source": "/seoulapi/(.*)",
-        "destination": "http://openapi.seoul.go.kr:8088/$1"
+        "source": "/seoulapi/:match*",
+        "destination": "http://openapi.seoul.go.kr:8088/:match*"
       }
     ]
   }

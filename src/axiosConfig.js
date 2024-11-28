@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //spring 서버 요청
 const userServer = axios.create({
-    baseURL: "https://35.216.127.107/api/v1",
+    baseURL: "http://35.216.127.107/api/v1",
     headers: {
         'Content-Type': 'application/json'
     }
@@ -23,17 +23,17 @@ userServer.interceptors.request.use(
 
 //날씨 서버 요청
 const weatherServer = axios.create({
-    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
+    baseURL: 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
 });
 
 //특보 서버 요청
 const specialReportServer = axios.create({
-    baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
+    baseURL: 'http://apis.data.go.kr/1360000/WthrWrnInfoService'
 });
 
-//서울 공공데이터 서버 요청//
+//서울 공공데이터 서버 요청
 const seoulDataServer = axios.create({
-    baseURL: 'https://openapi.seoul.go.kr:8088'
+    baseURL: 'http://openapi.seoul.go.kr:8088/seoulapi'
 });
 
 export {
