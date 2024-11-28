@@ -3,6 +3,10 @@
       {
         "source": "/seoulapi/:path*",
         "destination": "http://openapi.seoul.go.kr:8088/:path*"
+      },
+      {
+        "source": "/api/v1/:path*",
+        "destination": "http://35.216.127.107/api/v1/:path*"
       }
     ]
   }
