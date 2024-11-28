@@ -1,6 +1,5 @@
 import { seoulDataServer } from '@/axiosConfig';
 
-
 export const getSheltersData = async () => {
 
     const shelterList = ['TbGtnHwcwP', 'TbGtnCwP', 'shuntPlace'];
