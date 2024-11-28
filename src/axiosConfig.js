@@ -23,12 +23,12 @@ userServer.interceptors.request.use(
 
 //날씨 서버 요청
 const weatherServer = axios.create({
-    baseURL: 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
+    baseURL: 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0'
 });
 
 //특보 서버 요청
 const specialReportServer = axios.create({
-    baseURL: 'http://apis.data.go.kr/1360000/WthrWrnInfoService'
+    baseURL: 'https://apis.data.go.kr/1360000/WthrWrnInfoService'
 });
 
 //서울 공공데이터 서버 요청

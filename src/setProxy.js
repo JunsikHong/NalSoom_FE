@@ -10,7 +10,7 @@ export default function (app) {
 
   app.use(
     createProxyMiddleware({
-      target: 'http://apis.data.go.kr',
+      target: 'https://apis.data.go.kr',
       changeOrigin: true,
     })
   );
