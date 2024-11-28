@@ -3,7 +3,7 @@ const {createProxyMiddleware} = require('http-proxy-middleware');
 export default function (app) {
   app.use( '/api',
     createProxyMiddleware({
-      target: "https://nalsoom.online",
+      target: "https://www.nalsoom.online",
       changeOrigin: true,
     })
   );

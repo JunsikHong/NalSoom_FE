@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //spring 서버 요청
 const userServer = axios.create({
-    baseURL: "https://nalsoom.online/api/v1",
+    baseURL: "https://www.nalsoom.online/api/v1",
     headers: {
         'Content-Type': 'application/json'
     }
