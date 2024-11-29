@@ -1,6 +1,7 @@
 import { userServer } from '@/axiosConfig';
 
 export const checkIdDuplicate = async (joinIdValue) => {
+    console.log(joinIdValue);
     const response = await userServer.post('/user/idDuplicateCheck', {
         userId: joinIdValue
     });
