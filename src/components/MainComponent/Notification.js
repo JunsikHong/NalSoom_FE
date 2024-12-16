@@ -2,8 +2,8 @@
 import '@Style/Notification.css';
 
 //store
-import useLocationStore from '@/store/locationStore';
-import useTimeStore from '@/store/timeStore';
+import useLocationStore from '@Store/locationStore';
+import useTimeStore from '@Store/timeStore';
 
 //lib
 import { getSpecialReportData } from '@Services/useSpecialReportAPI';
