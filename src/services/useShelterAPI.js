@@ -41,7 +41,7 @@ export const getSheltersData = async () => {
             }
 
             var apiResult = await seoulDataServer.get('/' + process.env.REACT_APP_SEOUL_DATA_KEY + '/JSON/' + shelterList[j] + '/' + pageStartNum + '/' + pageEndNum);
-            
+
             switch (shelterList[j]) {
                 case 'TbGtnHwcwP' :
                     result.coolingCentreData.push(...apiResult.data.TbGtnHwcwP.row);
@@ -55,7 +55,6 @@ export const getSheltersData = async () => {
                 default : 
                     break;
             }
-
             if (pageEndNum === shelterListEndNum[j]) {
                 break;
             }
@@ -72,9 +71,9 @@ export const getSheltersData = async () => {
     
     for(var k = 0 ; k < result.coolingCentreData.length; k++) {
         result.coolingCentreData[k].type = 'TbGtnHwcwP';
-        result.coolingCentreData[k].latitude = result.coolingCentreData[k].LA;
-        result.coolingCentreData[k].longitude = result.coolingCentreData[k].LO;
-        result.coolingCentreData[k].shelterSN = result.coolingCentreData[k].R_SEQ_NO;
+        result.coolingCentreData[k].latitude = result.coolingCentreData[k].LAT;
+        result.coolingCentreData[k].longitude = result.coolingCentreData[k].LOT;
+        result.coolingCentreData[k].shelterSN = result.coolingCentreData[k].RESTAREA_NM;
 
         if(result.coolingCentreData[k].OPER_BGNG_YMD && result.coolingCentreData[k].OPER_END_YMD) {
             let operBeginDate = new Date(result.coolingCentreData[k].OPER_BGNG_YMD);
@@ -96,9 +95,9 @@ export const getSheltersData = async () => {
         result.heatingCentreData[l].type = 'TbGtnCwP';
         result.heatingCentreData[l].latitude = result.heatingCentreData[l].LAT;
         result.heatingCentreData[l].longitude = result.heatingCentreData[l].LOT;    
-        result.heatingCentreData[l].shelterSN = result.heatingCentreData[l].R_SEQ_NO;
+        result.heatingCentreData[l].shelterSN = result.heatingCentreData[l].SNO;
         
-        if(result.heatingCentreData[l].DT_START && result.heatingCentreData[l].DT_END) {
+        if(result.heatingCentreData[l].WD_OPN_HRM && result.heatingCentreData[l].WD_END_HRM) {
             let dtStartDate = new Date(result.heatingCentreData[l].DT_START);
             let dtEndDate = new Date(result.heatingCentreData[l].DT_END);
             if (formattedDate > dtStartDate &&
@@ -115,36 +114,36 @@ export const getSheltersData = async () => {
 
     for(var m = 0; m < result.shuntPlaceData.length; m++) {
         result.shuntPlaceData[m].type = 'shuntPlace';
-        result.shuntPlaceData[m].latitude = result.shuntPlaceData[m].MAP_COORD_Y;
-        result.shuntPlaceData[m].longitude = result.shuntPlaceData[m].MAP_COORD_X;
-        result.shuntPlaceData[m].shelterSN = result.shuntPlaceData[m].SN;
-        result.shuntPlaceData[m].R_AREA_NM = result.shuntPlaceData[m].SHUNT_NAM;
+        result.shuntPlaceData[m].latitude = result.shuntPlaceData[m].XCRD;
+        result.shuntPlaceData[m].longitude = result.shuntPlaceData[m].YCRD;
+        result.shuntPlaceData[m].shelterSN = result.shuntPlaceData[m].SNO;
+        result.shuntPlaceData[m].R_AREA_NM = result.shuntPlaceData[m].FCLT_NM;
 
-        if(result.shuntPlaceData[m].WKDY_USE_HR === '04:00-익일01:00') {
-            if(formattedTime > 1 && formattedTime < 4) {
-                result.shuntPlaceData[m].useYN = false;
-            } else {
-                result.shuntPlaceData[m].useYN = true;
-            }
-        } else if(result.shuntPlaceData[m].WKDY_USE_HR === '24시간') {
-            result.shuntPlaceData[m].useYN = true;
-        } else if(result.shuntPlaceData[m].WKDY_USE_HR === '05:00-24:00'){
-            if(formattedTime > 0 && formattedTime < 5) {
-                result.shuntPlaceData[m].useYN = false;
-            } else {
-                result.shuntPlaceData[m].useYN = true;
-            }
-        } else {
-            let beginTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(0,1);
-            let endTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(3,4);
-            if(formattedTime > beginTime && formattedTime < endTime) {
-                result.shuntPlaceData[m].useYN = true;
-            } else { 
-                result.shuntPlaceData[m].useYN = false;
-            }
-        }
+        // if(result.shuntPlaceData[m].WKDY_USE_HR === '04:00-익일01:00') {
+        //     if(formattedTime > 1 && formattedTime < 4) {
+        //         result.shuntPlaceData[m].useYN = false;
+        //     } else {
+        //         result.shuntPlaceData[m].useYN = true;
+        //     }
+        // } else if(result.shuntPlaceData[m].WKDY_USE_HR === '24시간') {
+        //     result.shuntPlaceData[m].useYN = true;
+        // } else if(result.shuntPlaceData[m].WKDY_USE_HR === '05:00-24:00'){
+        //     if(formattedTime > 0 && formattedTime < 5) {
+        //         result.shuntPlaceData[m].useYN = false;
+        //     } else {
+        //         result.shuntPlaceData[m].useYN = true;
+        //     }
+        // } else {
+        //     let beginTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(0,1);
+        //     let endTime = result.shuntPlaceData[m].WKDY_USE_HR.slice(3,4);
+        //     if(formattedTime > beginTime && formattedTime < endTime) {
+        //         result.shuntPlaceData[m].useYN = true;
+        //     } else { 
+        //         result.shuntPlaceData[m].useYN = false;
+        //     }
+        // }
     }
-    
+    console.log(...result.coolingCentreData, ...result.heatingCentreData, ...result.shuntPlaceData);
     return [...result.coolingCentreData, ...result.heatingCentreData, ...result.shuntPlaceData];
 }
 

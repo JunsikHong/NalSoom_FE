@@ -26,7 +26,7 @@ export default function ShelterDetailInfo() {
 
     const pointDetail = useRef([]); //detail click
 
-    const sheltersData = useQuery({ queryKey : ['sheltersData'] });    
+    const sheltersData = useQuery({ queryKey : ['sheltersData'] });
     const boardData = useQuery({ queryKey: ['boardData'], queryFn: () => { return getBoardData(searchShelter.current, searchShelterType, searchSortBy, searchPaging, searchSize) }, enabled : false }); //게시판 데이터
     const goodData = useQuery({ queryKey: ['goodData'], queryFn : getGoodData, enabled : false }); // 회원기능 : 본인 좋아요 여부 확인
 
@@ -54,9 +54,8 @@ export default function ShelterDetailInfo() {
 
             //api 정보 + 서버 정보
             matchShelterBoard(tempShelterData, tempBoardData, tempMatchedData);
-            
         }
-        
+
         //goodData
         if(goodData.isSuccess) {
             var tempGoodData = [...goodData.data];
@@ -225,7 +224,6 @@ export default function ShelterDetailInfo() {
                     {boardData.isLoading && goodData.isLoading ? <>loading...</> :
                         matchedData.length !== 0 ? matchedData.map((item, index) =>
                             <li className='shelter-detail-info-component' key={index}>
-
                                 {/* head에 Good 개수 표시 및 좋아요 클릭 시 좋아요 */}
                                 <div className='shelter-detail-info-head'>
                                     <p className='shelter-detail-info-type'>
@@ -246,7 +244,7 @@ export default function ShelterDetailInfo() {
                                 {/* body 클릭 시 Detail */}
                                 <div className='shelter-detail-info-body' ref={element => pointDetail.current[item.shelterProperNum] = element} onClick={() => clickDetail(item.shelterProperNum)}>
                                     <p className='shelter-detail-info-name'>
-                                        {item.shelterName}
+                                        {item.RESTAREA_NM}
                                     </p>
                                     {item.useYN === true ?
                                         <p className='shelter-detail-info-current-state useY'>현재운영중</p> :

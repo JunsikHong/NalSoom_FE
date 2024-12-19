@@ -31,3 +31,4 @@ _wildcard.example.com+2.pem
 
 # key files
 /cert
+src/axiosConfig.js

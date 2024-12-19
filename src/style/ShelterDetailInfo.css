@@ -289,16 +289,17 @@
     margin-left: 5px;
 }
 
-.cooling-centre-detail-info {
-    display: flex;
-    flex-direction: row;
+.shelter-detail-info-wrap {
+    margin: 10px 0px;
 }
 
+.cooling-centre-detail-info,
 .shunt-place-detail-info,
 .heating-centre-detail-info {
     display: flex;
     flex-direction: column;
     align-items: start;
+    gap: 10px 0px;
 }
 
 .shunt-place-detail-info-address,

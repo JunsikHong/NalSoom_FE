@@ -257,15 +257,14 @@ export default function Review({ shelterItem }) {
     return (
         <>
             <div className='shelter-detail-info-foot' onClick={clickRecentReview}>
-                
                 {/* 리뷰 개수 및 최신 댓글 */}
                 <p className='shelter-detail-info-review-count'>💬 {recentReviewData.length !== 0 ? recentReviewData.length : shelterItem.reviewCount}</p>
                 <div className='shelter-detail-info-review-firstline-btn-wrap'>
                     {shelterItem.reviewCount !== 0 || recentReviewData.length !== 0 ? <p className='shelter-detail-info-review-firstline'>{recentReviewData.length !== 0 ? recentReviewData[0].reviewContent : shelterItem.reviewContent}</p> : <></>}
                     {shelterItem.reviewCount !== 0 || recentReviewData.length !== 0 ? <p className='shelter-detail-info-more-btn'>⬇️</p> : <></>}
                 </div>
-            
             </div>
+
             <ul className='shelter-detail-info-recent-review-wrap' ref={selectedReviewList} style={{display : 'none'}}>
                 {recentReviewData.length !== 0 && viewRecentReview && recentReviewData.map(recentReview =>
                     <li className='shelter-detail-info-recent-review-list' key={recentReview.reviewProperNum}>

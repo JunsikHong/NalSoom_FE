@@ -34,6 +34,7 @@ const specialReportServer = axios.create({
 //서울 공공데이터 서버 요청
 const seoulDataServer = axios.create({
     baseURL: '/seoulapi'
+    // baseURL: 'http://openapi.seoul.go.kr:8088'
 });
 
 export {
